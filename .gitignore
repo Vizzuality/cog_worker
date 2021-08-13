@@ -6,7 +6,7 @@ __pycache__
 dask-worker-space
 *.egg-info
 
-docs/build/*
+doc_source/build/*
 
 prototyping
 output.tif

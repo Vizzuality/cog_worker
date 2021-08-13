@@ -1,7 +1,0 @@
-cog\_worker.manager
-==========================
-
-.. automodule:: cog_worker.manager
-   :members:
-   :undoc-members:
-   :show-inheritance:

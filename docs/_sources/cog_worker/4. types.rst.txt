@@ -1,0 +1,7 @@
+cog\_worker.types
+========================
+
+.. automodule:: cog_worker.types
+   :members:
+   :undoc-members:
+   :show-inheritance:
