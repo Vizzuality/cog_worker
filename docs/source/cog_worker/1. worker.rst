@@ -1,0 +1,7 @@
+cog\_worker.worker
+=========================
+
+.. automodule:: cog_worker.worker
+   :members:
+   :undoc-members:
+   :show-inheritance:

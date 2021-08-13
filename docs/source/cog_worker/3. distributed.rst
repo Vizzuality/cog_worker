@@ -1,0 +1,7 @@
+cog\_worker.distributed
+==============================
+
+.. automodule:: cog_worker.distributed
+   :members:
+   :undoc-members:
+   :show-inheritance:
