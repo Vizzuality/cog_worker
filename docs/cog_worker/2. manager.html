@@ -1,0 +1,493 @@
+<!doctype html>
+<html class="no-js">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="cog_worker.distributed" href="3.%20distributed.html" /><link rel="prev" title="cog_worker.worker" href="1.%20worker.html" />
+
+    <meta name="generator" content="sphinx-4.1.2, furo 2021.08.11.beta42"/>
+        <title>cog_worker.manager - Cog Worker 0.1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=197f00461d56902ea7ca048ec6e6ba026f62c97b" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?digest=93475b62d1c3bc01323a0eefdc14a62d77b12690" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  body[data-theme="dark"] {
+    --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+  }
+  @media (prefers-color-scheme: dark) {
+    body:not([data-theme="light"]) {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+  }
+</style>
+    <link media="(prefers-color-scheme: dark)" rel="stylesheet" href="../_static/pygments_dark.css"></head>
+  <body>
+    
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+      <path stroke="none" d="M0 0h24v24H0z" />
+      <line x1="4" y1="6" x2="20" y2="6" />
+      <line x1="10" y1="12" x2="20" y2="12" />
+      <line x1="6" y1="18" x2="20" y2="18" />
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-half" viewBox="0 0 24 24">
+    <title>Auto light/dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M13 12h5" />
+      <path d="M13 15h4" />
+      <path d="M13 18h1" />
+      <path d="M13 9h4" />
+      <path d="M13 6h1" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../index.html"><div class="brand">Cog Worker 0.1.0 documentation</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
+  
+  
+  <span class="sidebar-brand-text">Cog Worker 0.1.0 documentation</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
+  <input class="sidebar-search" placeholder=Search name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../index.html">Introduction</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../examples.html">Examples</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../examples/1.%20quick-start.html">Quick start</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/2.%20tutorial.html">Tutorial example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/3.%20tile-server.html">Create a custom tile server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/4.%20stac-ndvi.html">Compute Sentinel-2 NDVI with Stac and Dask</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="../api_reference.html">API Reference</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="1.%20worker.html">cog_worker.worker</a></li>
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">cog_worker.manager</a></li>
+<li class="toctree-l2"><a class="reference internal" href="3.%20distributed.html">cog_worker.distributed</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4.%20types.html">cog_worker.types</a></li>
+</ul>
+</li>
+</ul>
+
+</div>
+</div>
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <article role="main">
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <div class="section" id="module-cog_worker.manager">
+<span id="cog-worker-manager"></span><h1>cog_worker.manager<a class="headerlink" href="#module-cog_worker.manager" title="Permalink to this headline">¶</a></h1>
+<p>Previewing, chunking, and executing analysis.</p>
+<p>The Manager class is used to divide an area of analysis into chunks of manageable size,
+and execute functions on each of these chunks.</p>
+<p>When executing functions, the Manager instantiates a <a class="reference internal" href="1.%20worker.html#cog_worker.worker.Worker" title="cog_worker.worker.Worker"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cog_worker.worker.Worker</span></code></a> and passes
+it to the function as its first parameter. The Worker keeps track of the scale, projection,
+and bounds of its piece of the analysis, which it uses to handle the reading and writing of
+Cloud Optimized GeoTIFFs.</p>
+<div class="admonition-example admonition">
+<p class="admonition-title">Example</p>
+<p>Use the manager to preview an analysis before executing it:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">cog_worker</span> <span class="kn">import</span> <span class="n">Manager</span>
+<span class="kn">from</span> <span class="nn">rasterio.plot</span> <span class="kn">import</span> <span class="n">show</span>
+<span class="k">def</span> <span class="nf">my_analysis</span><span class="p">(</span><span class="n">worker</span><span class="p">):</span>
+    <span class="n">arr</span> <span class="o">=</span> <span class="n">worker</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s1">'example-cog.tif'</span><span class="p">)</span>
+    <span class="c1"># calculations ...</span>
+    <span class="k">return</span> <span class="n">arr</span>
+
+<span class="n">manager</span> <span class="o">=</span> <span class="n">Manager</span><span class="p">()</span>
+<span class="n">arr</span><span class="p">,</span> <span class="n">bbox</span> <span class="o">=</span> <span class="n">manager</span><span class="o">.</span><span class="n">preview</span><span class="p">(</span><span class="n">my_analysis</span><span class="p">)</span>
+<span class="n">show</span><span class="p">(</span><span class="n">arr</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Execute the analysis in chunks, saving the results to disk:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">manager</span><span class="o">.</span><span class="n">chuck_save</span><span class="p">(</span><span class="s1">'output.tif'</span><span class="p">,</span> <span class="n">myanalysis</span><span class="p">):</span>
+</pre></div>
+</div>
+</div>
+<dl class="py class">
+<dt class="sig sig-object py" id="cog_worker.manager.Manager">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">cog_worker.manager.</span></span><span class="sig-name descname"><span class="pre">Manager</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bounds</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span> </span><span class="pre">float</span><span class="p"><span class="pre">,</span> </span><span class="pre">float</span><span class="p"><span class="pre">,</span> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">(-</span> <span class="pre">180,</span> <span class="pre">-</span> <span class="pre">85,</span> <span class="pre">180,</span> <span class="pre">85)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">proj</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span> </span><span class="pre">str</span><span class="p"><span class="pre">,</span> </span><span class="pre">pyproj.proj.Proj</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">3857</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scale</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">float</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">10000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">buffer</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">16</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cog_worker/manager.html#Manager"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cog_worker.manager.Manager" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Class for managing scalable analysis of Cloud Optimized GeoTIFFs.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="cog_worker.manager.Manager.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bounds</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span> </span><span class="pre">float</span><span class="p"><span class="pre">,</span> </span><span class="pre">float</span><span class="p"><span class="pre">,</span> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">(-</span> <span class="pre">180,</span> <span class="pre">-</span> <span class="pre">85,</span> <span class="pre">180,</span> <span class="pre">85)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">proj</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span> </span><span class="pre">str</span><span class="p"><span class="pre">,</span> </span><span class="pre">pyproj.proj.Proj</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">3857</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scale</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">float</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">10000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">buffer</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">16</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cog_worker/manager.html#Manager.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cog_worker.manager.Manager.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize a Manager with a projection, scale, and bounding box for analysis.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>bounds</strong> (<em>BoundingBox</em>) – The region to be analyzed as a (west, south,
+east, north) tuple.</p></li>
+<li><p><strong>proj</strong> (<em>pyproj.Proj</em><em>, </em><em>str</em><em>, </em><em>int</em>) – The projection to analyze in.
+Generally accepts any proj4 string, WKT projection, or EPSG
+code. See pyproj.Proj for valid values.</p></li>
+<li><p><strong>scale</strong> (<em>float</em>) – The pixel size for analysis in the projection’s units
+(usually meters or degrees).</p></li>
+<li><p><strong>buffer</strong> (<em>int</em>) – When dividing analysis into chunks, the number of additional pixels
+to read on all sides to avoid edge effects. The ideal buffer size depends on
+your analysis (e.g. whether you use convolutions or distance functions).</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="cog_worker.manager.Manager.chunk_execute">
+<span class="sig-name descname"><span class="pre">chunk_execute</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="1.%20worker.html#cog_worker.worker.Worker" title="cog_worker.worker.Worker"><span class="pre">cog_worker.worker.Worker</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span> </span><span class="pre">numpy.ndarray</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span> </span><span class="pre">Callable</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">f_args</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Iterable</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">f_kwargs</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Mapping</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">chunksize</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">512</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><span class="pre">Iterator</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">,</span> </span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span> </span><span class="pre">float</span><span class="p"><span class="pre">,</span> </span><span class="pre">float</span><span class="p"><span class="pre">,</span> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/cog_worker/manager.html#Manager.chunk_execute"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cog_worker.manager.Manager.chunk_execute" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a generator that executes a function on chunks of at most <cite>chunksize</cite> pixels.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Manager.chunk_execute computes each chunk sequentially, trading time for reduced memory footprint.
+To run large scale analysis in parallel using dask, see cog_worker.distributed.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>You can estimate the memory requirement of executing a function at a given chunksize as
+<cite>(chunksize + 2*buffer)**2 * number_of_bands_or_arrays * bit_depth</cite>.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>f</strong> (<a class="reference internal" href="4.%20types.html#cog_worker.types.WorkerFunction" title="cog_worker.types.WorkerFunction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cog_worker.types.WorkerFunction</span></code></a>) – The function to execute. The function will recieve a
+cog_worker.worker.Worker as its first argument.</p></li>
+<li><p><strong>f_args</strong> (<em>list</em>) – Additional arguments to pass to the function.</p></li>
+<li><p><strong>f_kwargs</strong> (<em>dict</em>) – Additional keyword arguments to pass to the function.</p></li>
+<li><p><strong>chunksize</strong> (<em>int</em>) – Size of the chunks in pixels (excluding buffer).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Yields</dt>
+<dd class="field-even"><p>A tuple containing the return value of the function and the bounding
+box of the executed analysis in the target projection.</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="cog_worker.manager.Manager.chunk_params">
+<span class="sig-name descname"><span class="pre">chunk_params</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">chunksize</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">512</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cog_worker/manager.html#Manager.chunk_params"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cog_worker.manager.Manager.chunk_params" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate parameters to execute a function in chunks.</p>
+<p>Generates dicts of keyword arguments that can be passed to Manager.execute to run a function in chunks
+of size &lt;chunksize&gt;. This may be useful for distributing tasks to workers to execute in parallel. Each dict
+will contain the projection, scale, bounding box, and buffer. Attributes will be identical except
+for <cite>proj_bounds</cite> which define the area to analyze.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><cite>manager.chunk_execute(f)</cite> is equivalent to
+<cite>(manager.execute(f, **params) for params in manager.chunk_params())</cite></p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>chunksize</strong> (<em>int</em>) – Size of the chunks in pixels (excluding buffer).</p></li>
+<li><p><strong>**kwargs</strong> – optional additional keyword arguments to save to the dict (to eventually pass to Manager.execute)
+e.g. <cite>f</cite>, <cite>f_args</cite>, <cite>f_kwargs</cite></p></li>
+</ul>
+</dd>
+<dt class="field-even">Yields</dt>
+<dd class="field-even"><p>Dicts of keyword arguments that can be passed to <a class="reference internal" href="#cog_worker.manager.Manager.execute" title="cog_worker.manager.Manager.execute"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cog_worker.manager.Manager.execute()</span></code></a>.</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="cog_worker.manager.Manager.chunk_save">
+<span class="sig-name descname"><span class="pre">chunk_save</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dst</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span> </span><span class="pre">IO</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">f</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="1.%20worker.html#cog_worker.worker.Worker" title="cog_worker.worker.Worker"><span class="pre">cog_worker.worker.Worker</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span> </span><span class="pre">numpy.ndarray</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span> </span><span class="pre">Callable</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">f_args</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Iterable</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">f_kwargs</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Mapping</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">chunksize</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">512</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cog_worker/manager.html#Manager.chunk_save"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cog_worker.manager.Manager.chunk_save" title="Permalink to this definition">¶</a></dt>
+<dd><p>Execute a function in chunks and write each chunk to disk as it is completed.</p>
+<p>The chunk_save method is identical to Manager.chunk_execute, except it writes results to &lt;dst&gt;
+instead of yielding them. Manager.chunk_save uses the rasterio GeoTiff driver.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The function to be executed will recieve a cog_worker.worker.Worker as its first argument and
+should return a 3-dimensional numpy array of &lt;sharsize&gt; (optionally plus the buffer pixels).
+e.g.</p>
+<blockquote>
+<div><p># Read a cog in chunks and write those chunks to ‘test.tif’
+manager.chunk_save(‘test.tif’, lambda worker: worker.read(‘example-cog-url.tif’))</p>
+</div></blockquote>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dst</strong> (<em>str</em>) – The file path to write to.</p></li>
+<li><p><strong>f</strong> (<a class="reference internal" href="4.%20types.html#cog_worker.types.WorkerFunction" title="cog_worker.types.WorkerFunction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cog_worker.types.WorkerFunction</span></code></a>) – The function to execute.
+The function will recieve a cog_worker.worker.Worker as its first argument
+and must return a 3-dimensional numpy array of <cite>chunksize</cite> (including or excluding the buffer).</p></li>
+<li><p><strong>f_args</strong> (<em>list</em>) – Additional arguments to pass to the function.</p></li>
+<li><p><strong>f_kwargs</strong> (<em>dict</em>) – Additional keyword arguments to pass to the function.</p></li>
+<li><p><strong>chunksize</strong> (<em>int</em>) – Size of the chunks in pixels (excluding buffer).</p></li>
+<li><p><strong>**kwargs</strong> – Additional keyword arguments to pass to rasterio.open.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="cog_worker.manager.Manager.chunks">
+<span class="sig-name descname"><span class="pre">chunks</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">chunksize</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">512</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><span class="pre">Iterator</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span> </span><span class="pre">float</span><span class="p"><span class="pre">,</span> </span><span class="pre">float</span><span class="p"><span class="pre">,</span> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/cog_worker/manager.html#Manager.chunks"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cog_worker.manager.Manager.chunks" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate bounding boxes for chunks of at most &lt;chunksize&gt; pixels in the managers scale and projection.</p>
+<p>The chunks method divides the Manager’s bounding box into chunks of manageable size.
+Each chunk will be at most &lt;chunksize&gt; pixels, though the geographic extent of the chunk
+depends on the Manager’s projection and scale.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>chunksize</strong> (<em>int</em>) – Size of the chunks in pixels (excluding buffer).</p>
+</dd>
+<dt class="field-even">Yields</dt>
+<dd class="field-even"><p><em>BoundingBox</em> – The bounding box of the chunk in the Manager’s projection</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="cog_worker.manager.Manager.execute">
+<span class="sig-name descname"><span class="pre">execute</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="1.%20worker.html#cog_worker.worker.Worker" title="cog_worker.worker.Worker"><span class="pre">cog_worker.worker.Worker</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span> </span><span class="pre">numpy.ndarray</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span> </span><span class="pre">Callable</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">f_args</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Iterable</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">f_kwargs</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Mapping</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clip</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">,</span> </span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span> </span><span class="pre">float</span><span class="p"><span class="pre">,</span> </span><span class="pre">float</span><span class="p"><span class="pre">,</span> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/cog_worker/manager.html#Manager.execute"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cog_worker.manager.Manager.execute" title="Permalink to this definition">¶</a></dt>
+<dd><p>Execute a function that takes a cog_worker.worker.Worker as its first parameter.</p>
+<p>The execute method is the underlying method for running analysis. By default, it
+will run the function once for the Manager’s given scale and bounding box.</p>
+<p>When executing functions, the Manager instantiates a cog_worker.worker.Worker and passes
+it to the function as its first parameter. The Worker keeps track of the scale, projection,
+and bounds of its piece of the analysis, which it uses to handle the reading and writing of
+Cloud Optimized GeoTIFFs.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>f</strong> (<a class="reference internal" href="4.%20types.html#cog_worker.types.WorkerFunction" title="cog_worker.types.WorkerFunction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cog_worker.types.WorkerFunction</span></code></a>) – The function to execute. The function will recieve a
+cog_worker.worker.Worker as its first argument.</p></li>
+<li><p><strong>f_args</strong> (<em>list</em>) – Additional arguments to pass to the function.</p></li>
+<li><p><strong>f_kwargs</strong> (<em>dict</em>) – Additional keyword arguments to pass to the function.</p></li>
+<li><p><strong>clip</strong> (<em>bool</em>) – Whether or not to clip the buffer from the completed analysis.</p></li>
+<li><p><strong>**kwargs</strong> – Additional keyword arguments to overload the Manager’s properties.
+(bounds, proj, scale, or buffer)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A tuple containing the return value of the function and the bounding
+box of the executed analysis in the target projection.</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="cog_worker.manager.Manager.preview">
+<span class="sig-name descname"><span class="pre">preview</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="1.%20worker.html#cog_worker.worker.Worker" title="cog_worker.worker.Worker"><span class="pre">cog_worker.worker.Worker</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span> </span><span class="pre">numpy.ndarray</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span> </span><span class="pre">Callable</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">f_args</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Iterable</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">f_kwargs</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Mapping</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bounds</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span> </span><span class="pre">float</span><span class="p"><span class="pre">,</span> </span><span class="pre">float</span><span class="p"><span class="pre">,</span> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_size</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">1024</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">,</span> </span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span> </span><span class="pre">float</span><span class="p"><span class="pre">,</span> </span><span class="pre">float</span><span class="p"><span class="pre">,</span> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/cog_worker/manager.html#Manager.preview"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cog_worker.manager.Manager.preview" title="Permalink to this definition">¶</a></dt>
+<dd><p>Preview a function by executing it at a reduced scale.</p>
+<p>The preview method automatically reduces the scale of analysis to fit within <cite>max_size</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>f</strong> (<em>WorkerFunction</em>) – The function to execute. The function will
+recieve a cog_worker.worker.Worker as its first argument.</p></li>
+<li><p><strong>f_args</strong> (<em>list</em>) – Additional arguments to pass to the function.</p></li>
+<li><p><strong>f_kwargs</strong> (<em>dict</em>) – Additional keyword arguments to pass to the function.</p></li>
+<li><p><strong>(</strong><strong>BoundingBox</strong> (<em>bounds</em>) – self.bounds): The region to analize.</p></li>
+<li><p><strong>default</strong> – self.bounds): The region to analize.</p></li>
+<li><p><strong>max_size</strong> (<em>int</em>) – The maximum size (width or height) in pixels to
+compute, ignoring any buffer (default: 1024px).</p></li>
+<li><p><strong>**kwargs</strong> – Additional keyword arguments to overload the Manager’s properties.
+(proj or buffer).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A tuple containing the return value of the function and the bounding
+box of the executed analysis in the target projection.</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="cog_worker.manager.Manager.tile">
+<span class="sig-name descname"><span class="pre">tile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="1.%20worker.html#cog_worker.worker.Worker" title="cog_worker.worker.Worker"><span class="pre">cog_worker.worker.Worker</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span> </span><span class="pre">numpy.ndarray</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span> </span><span class="pre">Callable</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">f_args</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Iterable</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">f_kwargs</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Mapping</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tilesize</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">256</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">,</span> </span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span> </span><span class="pre">float</span><span class="p"><span class="pre">,</span> </span><span class="pre">float</span><span class="p"><span class="pre">,</span> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/cog_worker/manager.html#Manager.tile"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cog_worker.manager.Manager.tile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Execute a function for the scale and bounds of a TMS tile.</p>
+<p>The tile method supports non-global and non-mercator tiling schemes via
+Morecantile. To generate standard web tiles, instantiate the Manager
+with the default parameters.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>f</strong> (<a class="reference internal" href="4.%20types.html#cog_worker.types.WorkerFunction" title="cog_worker.types.WorkerFunction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cog_worker.types.WorkerFunction</span></code></a>) – The function to execute. The function will
+recieve a cog_worker.worker.Worker as its first argument.</p></li>
+<li><p><strong>f_args</strong> (<em>list</em>) – Additional arguments to pass to the function.</p></li>
+<li><p><strong>f_kwargs</strong> (<em>dict</em>) – Additional keyword arguments to pass to the function.</p></li>
+<li><p><strong>bounds</strong> (<em>BoundingBox</em>) – The region to analize (default: self.bounds)</p></li>
+<li><p><strong>max_size</strong> (<em>int</em>) – The maximum size (width or height) in pixels to compute, ignoring any buffer
+(default: 1024px). Automatically reduces the scale of analysis to fit within <cite>max_size</cite>.</p></li>
+<li><p><strong>**kwargs</strong> – Additional keyword arguments to overload the Manager’s properties.
+(buffer).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A tuple containing the return value of the function and the bounding
+box of the executed analysis in the target projection.</p>
+</dd>
+</dl>
+</dd></dl>
+</dd></dl>
+</div>
+
+      </article>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="3.%20distributed.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">cog_worker.distributed</div>
+              </div>
+              <svg><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="1.%20worker.html">
+              <svg><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">cog_worker.worker</div>
+                
+              </div>
+            </a>
+        </div>
+
+        <div class="related-information">
+              Copyright &#169; 2021, Simbiotica S.L.
+            |
+            Built with <a href="https://www.sphinx-doc.org/">Sphinx</a>
+              and
+              <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+              <a href="https://github.com/pradyunsg/furo">Furo theme</a>.
+            |
+            <a class="muted-link" href="../_sources/cog_worker/2. manager.rst.txt"
+               rel="nofollow">
+              Show Source
+            </a>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer no-toc">
+      
+      
+      
+    </aside>
+  </div>
+</div><script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/scripts/main.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    </body>
+</html>
