@@ -12,8 +12,11 @@ Scalable geospatial analysis on `Cloud Optimized GeoTIFFs (COGs) <https://www.co
    examples
    api_reference
 
-cog_worker is a simple library to help write scripts to conduct large-scale 
-analysis of gridded data. In practice, it provides two things:
+cog_worker is a simple library to help write scripts to conduct scaleable
+analysis of gridded data. It's intended to be useful for moderate- to large-scale 
+GIS, remote sensing, and machine learning applications.
+
+In practice, it provides two things:
 
 1. A pattern for writing projection- and scale-agnostic 
    analyses of COGs, and
