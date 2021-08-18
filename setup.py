@@ -6,7 +6,7 @@ with open("README.md") as f:
 
 setup(
     name="cog_worker",
-    version="0.1.1",
+    version="0.1.2",
     description="Scalable geospatial analysis on Cloud Optimized GeoTIFFs.",
     long_description=desc,
     long_description_content_type="text/markdown",
