@@ -25,6 +25,7 @@ from pyproj.enums import TransformDirection
 import rasterio as rio
 from rasterio._err import CPLE_AppDefinedError
 import numpy as np
+from rio_tiler.errors import EmptyMosaicError
 from rio_tiler.models import ImageData
 from rio_tiler.io import COGReader
 from rio_tiler.mosaic import mosaic_reader
@@ -128,7 +129,7 @@ class Worker:
             *bounds, pts, direction=TransformDirection.INVERSE
         )
 
-    def empty(self, mask=False) -> np.ndarray:
+    def empty(self, mask: bool = False) -> np.ndarray:
         """Return a zeroed array covering the Worker's extent including the buffer.
 
         Args:
@@ -137,10 +138,10 @@ class Worker:
         """
         arr = np.zeros((1, self.height + self.buffer * 2, self.width + self.buffer * 2))
         if mask:
-            mask = np.ones(
+            _mask = np.ones(
                 (self.height + self.buffer * 2, self.width + self.buffer * 2)
             )
-            arr = np.ma.array(arr, mask=mask)
+            arr = np.ma.array(arr, mask=_mask)
         return arr
 
     def read(self, src: Union[str, Sequence[str]], **kwargs) -> np.ma.MaskedArray:
@@ -180,9 +181,12 @@ class Worker:
         if isinstance(src, str):
             img = _read_COG(src, proj_bounds, self._proj.srs, width, height, **kwargs)
         elif isinstance(src, Sequence):
-            img, asset = mosaic_reader(
-                src, _read_COG, proj_bounds, self.proj.srs, width, height, **kwargs
-            )
+            try:
+                img, asset = mosaic_reader(
+                    src, _read_COG, proj_bounds, self.proj.srs, width, height, **kwargs
+                )
+            except EmptyMosaicError:
+                return self.empty(mask=True)
 
         arr = img.data
         mask = (img.mask == 0) | np.isnan(arr)

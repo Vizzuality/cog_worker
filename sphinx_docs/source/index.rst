@@ -66,7 +66,7 @@ If you want to use the :obj:`cog_worker.distributed` module to execute functions
 Getting started
 ---------------
 
-Follow the `quick start <examples/quick-start.html>`_ notebook.
+Follow the `quick start <examples/1.\ quick-start.html>`_ notebook.
 
 See also
 --------

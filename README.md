@@ -13,5 +13,5 @@ pip install cog_worker
 
 ## Examples
 
-See `docs/source/examples` for Jupyter notebook examples
+See `docs/examples` for Jupyter notebook examples
 

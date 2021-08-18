@@ -96,7 +96,7 @@ class DaskManager(cog_worker.manager.Manager):
         writing of Cloud Optimized GeoTIFFs.
 
         Args:
-            f (WorkerFunction): The function to execute. The function will
+            f (:obj:`cog_worker.types.WorkerFunction`): The function to execute. The function will
                 recieve a cog_worker.worker.Worker as its first argument.
             f_args (list): Additional arguments to pass to the function.
             f_kwargs (dict): Additional keyword arguments to pass to the
@@ -142,7 +142,7 @@ class DaskManager(cog_worker.manager.Manager):
             ``(chunksize + 2*buffer)**2 * number_of_bands_or_arrays * bit_depth``.
 
         Args:
-            f (WorkerFunction): The function to execute. The function will
+            f (:obj:`cog_worker.types.WorkerFunction`): The function to execute. The function will
                 recieve a cog_worker.worker.Worker as its first argument.
             f_args (list): Additional arguments to pass to the function.
             f_kwargs (dict): Additional keyword arguments to pass to the
