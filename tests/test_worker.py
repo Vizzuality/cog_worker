@@ -14,7 +14,7 @@ def mercator_worker():
 
 
 def test_xy_bounds(mercator_worker):
-    bbox =  mercator_worker.xy_bounds()
+    bbox = mercator_worker.xy_bounds()
     _bbox = (
         -20037508.342789244,
         -19971868.88040857,
