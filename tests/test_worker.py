@@ -14,18 +14,25 @@ def mercator_worker():
 
 
 def test_xy_bounds(mercator_worker):
-    assert mercator_worker.xy_bounds() == (
+    bbox =  mercator_worker.xy_bounds()
+    _bbox = (
         -20037508.342789244,
         -19971868.88040857,
         20037508.342789244,
         19971868.88040857,
     )
-    assert mercator_worker.xy_bounds(True) == (
+    for a, b in zip(bbox, _bbox):
+        assert pytest.approx(a, b)
+
+    bbox = mercator_worker.xy_bounds(True)
+    _bbox = (
         -20837508.342789244,
         -20771868.88040857,
         20837508.342789244,
         20771868.88040857,
     )
+    for a, b in zip(bbox, _bbox):
+        assert pytest.approx(a, b)
 
 
 def test_latlng_bounds(mercator_worker):
@@ -75,9 +82,12 @@ def test_clip_buffer(mercator_worker):
 
 
 def test__buffer_bbox(mercator_worker):
-    assert mercator_worker._buffer_bbox() == (
+    bbox = mercator_worker._buffer_bbox()
+    _bbox = (
         -20837508.342789244,
         -20771868.88040857,
         20837508.342789244,
         20771868.88040857,
     )
+    for a, b in zip(bbox, _bbox):
+        assert pytest.approx(a, b)

@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" />
 
     <meta name="generator" content="sphinx-4.1.2, furo 2021.08.11.beta42"/>
-        <title>cog_worker.worker - Cog Worker 0.1.0 documentation</title>
+        <title>cog_worker.worker - Cog Worker 0.1.2 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?digest=197f00461d56902ea7ca048ec6e6ba026f62c97b" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?digest=93475b62d1c3bc01323a0eefdc14a62d77b12690" />
@@ -120,7 +120,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../index.html"><div class="brand">Cog Worker 0.1.0 documentation</div></a>
+      <a href="../../index.html"><div class="brand">Cog Worker 0.1.2 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -143,7 +143,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../../index.html">
   
   
-  <span class="sidebar-brand-text">Cog Worker 0.1.0 documentation</span>
+  <span class="sidebar-brand-text">Cog Worker 0.1.2 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="../../search.html" role="search">
   <input class="sidebar-search" placeholder=Search name="q" aria-label="Search">
@@ -221,6 +221,7 @@
 <span class="kn">import</span> <span class="nn">rasterio</span> <span class="k">as</span> <span class="nn">rio</span>
 <span class="kn">from</span> <span class="nn">rasterio._err</span> <span class="kn">import</span> <span class="n">CPLE_AppDefinedError</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">rio_tiler.errors</span> <span class="kn">import</span> <span class="n">EmptyMosaicError</span>
 <span class="kn">from</span> <span class="nn">rio_tiler.models</span> <span class="kn">import</span> <span class="n">ImageData</span>
 <span class="kn">from</span> <span class="nn">rio_tiler.io</span> <span class="kn">import</span> <span class="n">COGReader</span>
 <span class="kn">from</span> <span class="nn">rio_tiler.mosaic</span> <span class="kn">import</span> <span class="n">mosaic_reader</span>
@@ -324,7 +325,7 @@
             <span class="o">*</span><span class="n">bounds</span><span class="p">,</span> <span class="n">pts</span><span class="p">,</span> <span class="n">direction</span><span class="o">=</span><span class="n">TransformDirection</span><span class="o">.</span><span class="n">INVERSE</span>
         <span class="p">)</span></div>
 
-<div class="viewcode-block" id="Worker.empty"><a class="viewcode-back" href="../../cog_worker/1.%20worker.html#cog_worker.worker.Worker.empty">[docs]</a>    <span class="k">def</span> <span class="nf">empty</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mask</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<div class="viewcode-block" id="Worker.empty"><a class="viewcode-back" href="../../cog_worker/1.%20worker.html#cog_worker.worker.Worker.empty">[docs]</a>    <span class="k">def</span> <span class="nf">empty</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mask</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
         <span class="sd">"""Return a zeroed array covering the Worker's extent including the buffer.</span>
 
 <span class="sd">        Args:</span>
@@ -333,10 +334,10 @@
 <span class="sd">        """</span>
         <span class="n">arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">height</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">buffer</span> <span class="o">*</span> <span class="mi">2</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">buffer</span> <span class="o">*</span> <span class="mi">2</span><span class="p">))</span>
         <span class="k">if</span> <span class="n">mask</span><span class="p">:</span>
-            <span class="n">mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span>
+            <span class="n">_mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span>
                 <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">height</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">buffer</span> <span class="o">*</span> <span class="mi">2</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">buffer</span> <span class="o">*</span> <span class="mi">2</span><span class="p">)</span>
             <span class="p">)</span>
-            <span class="n">arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ma</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="n">mask</span><span class="o">=</span><span class="n">mask</span><span class="p">)</span>
+            <span class="n">arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ma</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="n">mask</span><span class="o">=</span><span class="n">_mask</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">arr</span></div>
 
 <div class="viewcode-block" id="Worker.read"><a class="viewcode-back" href="../../cog_worker/1.%20worker.html#cog_worker.worker.Worker.read">[docs]</a>    <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">src</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]],</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ma</span><span class="o">.</span><span class="n">MaskedArray</span><span class="p">:</span>
@@ -376,9 +377,12 @@
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
             <span class="n">img</span> <span class="o">=</span> <span class="n">_read_COG</span><span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="n">proj_bounds</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_proj</span><span class="o">.</span><span class="n">srs</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">):</span>
-            <span class="n">img</span><span class="p">,</span> <span class="n">asset</span> <span class="o">=</span> <span class="n">mosaic_reader</span><span class="p">(</span>
-                <span class="n">src</span><span class="p">,</span> <span class="n">_read_COG</span><span class="p">,</span> <span class="n">proj_bounds</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">proj</span><span class="o">.</span><span class="n">srs</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
-            <span class="p">)</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">img</span><span class="p">,</span> <span class="n">asset</span> <span class="o">=</span> <span class="n">mosaic_reader</span><span class="p">(</span>
+                    <span class="n">src</span><span class="p">,</span> <span class="n">_read_COG</span><span class="p">,</span> <span class="n">proj_bounds</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">proj</span><span class="o">.</span><span class="n">srs</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+                <span class="p">)</span>
+            <span class="k">except</span> <span class="n">EmptyMosaicError</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">mask</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
         <span class="n">arr</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">data</span>
         <span class="n">mask</span> <span class="o">=</span> <span class="p">(</span><span class="n">img</span><span class="o">.</span><span class="n">mask</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="o">|</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">arr</span><span class="p">)</span>

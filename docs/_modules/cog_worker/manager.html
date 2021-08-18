@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" />
 
     <meta name="generator" content="sphinx-4.1.2, furo 2021.08.11.beta42"/>
-        <title>cog_worker.manager - Cog Worker 0.1.0 documentation</title>
+        <title>cog_worker.manager - Cog Worker 0.1.2 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?digest=197f00461d56902ea7ca048ec6e6ba026f62c97b" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?digest=93475b62d1c3bc01323a0eefdc14a62d77b12690" />
@@ -120,7 +120,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../index.html"><div class="brand">Cog Worker 0.1.0 documentation</div></a>
+      <a href="../../index.html"><div class="brand">Cog Worker 0.1.2 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -143,7 +143,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../../index.html">
   
   
-  <span class="sidebar-brand-text">Cog Worker 0.1.0 documentation</span>
+  <span class="sidebar-brand-text">Cog Worker 0.1.2 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="../../search.html" role="search">
   <input class="sidebar-search" placeholder=Search name="q" aria-label="Search">
@@ -417,7 +417,7 @@
 
 <span class="sd">        Note:</span>
 <span class="sd">            You can estimate the memory requirement of executing a function at a given chunksize as</span>
-<span class="sd">            `(chunksize + 2*buffer)**2 * number_of_bands_or_arrays * bit_depth`.</span>
+<span class="sd">            ``(chunksize + 2*buffer)**2 * number_of_bands_or_arrays * bit_depth``.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            f (:obj:`cog_worker.types.WorkerFunction`): The function to execute. The function will recieve a</span>
@@ -444,13 +444,13 @@
     <span class="p">):</span>
         <span class="sd">"""Execute a function in chunks and write each chunk to disk as it is completed.</span>
 
-<span class="sd">        The chunk_save method is identical to Manager.chunk_execute, except it writes results to &lt;dst&gt;</span>
+<span class="sd">        The chunk_save method is identical to Manager.chunk_execute, except it writes results to ``dst``</span>
 <span class="sd">        instead of yielding them. Manager.chunk_save uses the rasterio GeoTiff driver.</span>
 
 <span class="sd">        Note:</span>
 <span class="sd">            The function to be executed will recieve a cog_worker.worker.Worker as its first argument and</span>
-<span class="sd">            should return a 3-dimensional numpy array of &lt;sharsize&gt; (optionally plus the buffer pixels).</span>
-<span class="sd">            e.g.</span>
+<span class="sd">            should return a 3-dimensional numpy array of ``chunksize`` (optionally plus the buffer pixels).</span>
+<span class="sd">            e.g.::</span>
 
 <span class="sd">                # Read a cog in chunks and write those chunks to 'test.tif'</span>
 <span class="sd">                manager.chunk_save('test.tif', lambda worker: worker.read('example-cog-url.tif'))</span>
@@ -459,7 +459,7 @@
 <span class="sd">            dst (str): The file path to write to.</span>
 <span class="sd">            f (:obj:`cog_worker.types.WorkerFunction`): The function to execute.</span>
 <span class="sd">                The function will recieve a cog_worker.worker.Worker as its first argument</span>
-<span class="sd">                and must return a 3-dimensional numpy array of `chunksize` (including or excluding the buffer).</span>
+<span class="sd">                and must return a 3-dimensional numpy array of ``chunksize`` (including or excluding the buffer).</span>
 <span class="sd">            f_args (list): Additional arguments to pass to the function.</span>
 <span class="sd">            f_kwargs (dict): Additional keyword arguments to pass to the function.</span>
 <span class="sd">            chunksize (int): Size of the chunks in pixels (excluding buffer).</span>
@@ -507,16 +507,16 @@
 <span class="sd">        Generates dicts of keyword arguments that can be passed to Manager.execute to run a function in chunks</span>
 <span class="sd">        of size &lt;chunksize&gt;. This may be useful for distributing tasks to workers to execute in parallel. Each dict</span>
 <span class="sd">        will contain the projection, scale, bounding box, and buffer. Attributes will be identical except</span>
-<span class="sd">        for `proj_bounds` which define the area to analyze.</span>
+<span class="sd">        for ``proj_bounds`` which define the area to analyze.</span>
 
 <span class="sd">        Note:</span>
-<span class="sd">            `manager.chunk_execute(f)` is equivalent to</span>
-<span class="sd">            `(manager.execute(f, **params) for params in manager.chunk_params())`</span>
+<span class="sd">            ``manager.chunk_execute(f)`` is equivalent to</span>
+<span class="sd">            ``(manager.execute(f, **params) for params in manager.chunk_params())``</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            chunksize (int): Size of the chunks in pixels (excluding buffer).</span>
 <span class="sd">            **kwargs: optional additional keyword arguments to save to the dict (to eventually pass to Manager.execute)</span>
-<span class="sd">                e.g. `f`, `f_args`, `f_kwargs`</span>
+<span class="sd">                e.g. ``f``, ``f_args``, ``f_kwargs``</span>
 
 <span class="sd">        Yields:</span>
 <span class="sd">            Dicts of keyword arguments that can be passed to :obj:`cog_worker.manager.Manager.execute()`.</span>
