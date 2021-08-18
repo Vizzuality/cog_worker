@@ -91,5 +91,5 @@ Dependencies:
 Links
 -----
 
-- `Github <https://github.com/vizzuality/cog_worker>`_
-- `PyPI package <https://pypi.org/cog_worker>`_
+- `cog_worker Github <https://github.com/vizzuality/cog_worker>`_
+- `cog_worker PyPI package <https://pypi.org/projects/cog-worker>`_
