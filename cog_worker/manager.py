@@ -221,7 +221,7 @@ class Manager:
 
         Note:
             You can estimate the memory requirement of executing a function at a given chunksize as
-            `(chunksize + 2*buffer)**2 * number_of_bands_or_arrays * bit_depth`.
+            ``(chunksize + 2*buffer)**2 * number_of_bands_or_arrays * bit_depth``.
 
         Args:
             f (:obj:`cog_worker.types.WorkerFunction`): The function to execute. The function will recieve a
@@ -248,13 +248,13 @@ class Manager:
     ):
         """Execute a function in chunks and write each chunk to disk as it is completed.
 
-        The chunk_save method is identical to Manager.chunk_execute, except it writes results to <dst>
+        The chunk_save method is identical to Manager.chunk_execute, except it writes results to ``dst``
         instead of yielding them. Manager.chunk_save uses the rasterio GeoTiff driver.
 
         Note:
             The function to be executed will recieve a cog_worker.worker.Worker as its first argument and
-            should return a 3-dimensional numpy array of <sharsize> (optionally plus the buffer pixels).
-            e.g.
+            should return a 3-dimensional numpy array of ``chunksize`` (optionally plus the buffer pixels).
+            e.g.::
 
                 # Read a cog in chunks and write those chunks to 'test.tif'
                 manager.chunk_save('test.tif', lambda worker: worker.read('example-cog-url.tif'))
@@ -263,7 +263,7 @@ class Manager:
             dst (str): The file path to write to.
             f (:obj:`cog_worker.types.WorkerFunction`): The function to execute.
                 The function will recieve a cog_worker.worker.Worker as its first argument
-                and must return a 3-dimensional numpy array of `chunksize` (including or excluding the buffer).
+                and must return a 3-dimensional numpy array of ``chunksize`` (including or excluding the buffer).
             f_args (list): Additional arguments to pass to the function.
             f_kwargs (dict): Additional keyword arguments to pass to the function.
             chunksize (int): Size of the chunks in pixels (excluding buffer).
@@ -311,16 +311,16 @@ class Manager:
         Generates dicts of keyword arguments that can be passed to Manager.execute to run a function in chunks
         of size <chunksize>. This may be useful for distributing tasks to workers to execute in parallel. Each dict
         will contain the projection, scale, bounding box, and buffer. Attributes will be identical except
-        for `proj_bounds` which define the area to analyze.
+        for ``proj_bounds`` which define the area to analyze.
 
         Note:
-            `manager.chunk_execute(f)` is equivalent to
-            `(manager.execute(f, **params) for params in manager.chunk_params())`
+            ``manager.chunk_execute(f)`` is equivalent to
+            ``(manager.execute(f, **params) for params in manager.chunk_params())``
 
         Args:
             chunksize (int): Size of the chunks in pixels (excluding buffer).
             **kwargs: optional additional keyword arguments to save to the dict (to eventually pass to Manager.execute)
-                e.g. `f`, `f_args`, `f_kwargs`
+                e.g. ``f``, ``f_args``, ``f_kwargs``
 
         Yields:
             Dicts of keyword arguments that can be passed to :obj:`cog_worker.manager.Manager.execute()`.

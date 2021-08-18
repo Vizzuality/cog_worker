@@ -15,7 +15,6 @@ help:
 ghpages:
 	@make html
 	cp -r build/html ../docs
-	touch ../docs/.nojekyll
 
 .PHONY: help Makefile
 
