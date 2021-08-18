@@ -92,4 +92,4 @@ Links
 -----
 
 - `cog_worker Github <https://github.com/vizzuality/cog_worker>`_
-- `cog_worker PyPI package <https://pypi.org/projects/cog-worker>`_
+- `cog_worker PyPI package <https://pypi.org/project/cog-worker>`_
