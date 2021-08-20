@@ -78,7 +78,7 @@ Other tools:
 
 - `rio-cogeo <https://cogeotiff.github.io/rio-cogeo/>`_ Cloud Optimized GeoTIFF (COG) creation and validation plugin for Rasterio. (Need to turn your data into COGs?)
 - `titiler <https://developmentseed.org/titiler>`_ - A modern dynamic tile server built on top of FastAPI and Rasterio/GDAL. (Need to serve COGs as tiles for a webmap?)
-- `stackstac <https://stackstac.readthedocs.io/en/latest/index.html>`_ - Easier cloud-native geoprocessing. (All your data have the same projection/scale?)
+- `stackstac <https://stackstac.readthedocs.io/>`_ - Easier cloud-native geoprocessing. (Leverage the full power of xarray and stac)
 
 Dependencies:
 
