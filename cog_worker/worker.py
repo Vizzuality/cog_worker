@@ -265,7 +265,7 @@ def _read_COG(
 ) -> ImageData:
     """Read part of a COG, warping and resampling to a target shape."""
     tries = 0
-    while tries < 5:
+    while tries <= 10:
         try:
             with COGReader(filepath=asset, **kwargs) as cog:  # type: ignore
                 return cog.part(
@@ -280,4 +280,5 @@ def _read_COG(
             # Ignore some strange GDAL errors when reading in some projections
             # see: https://rasterio.groups.io/g/main/message/780
             logger.debug(e)
+        tries += 1
     raise Exception(f"Failed reading asset {asset}")
