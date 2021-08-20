@@ -198,15 +198,15 @@
 <p>Scalable geospatial analysis on <a class="reference external" href="https://www.cogeo.org/">Cloud Optimized GeoTIFFs (COGs)</a>.</p>
 <div class="toctree-wrapper compound">
 </div>
-<p>cog_worker is a simple library to help write scripts to conduct scaleable
-analysis of gridded data. It’s intended to be useful for moderate- to large-scale
-GIS, remote sensing, and machine learning applications.</p>
-<p>In practice, it provides two things:</p>
+<p>cog_worker is a simple python library to help write and chunk
+analyses of gridded data for applications including GIS, remote sensing,
+and machine learning.</p>
+<p>It provides two things:</p>
 <ol class="arabic simple">
-<li><p>A pattern for writing projection- and scale-agnostic
-analyses of COGs, and</p></li>
-<li><p>Methods for previewing the results of these analyses and
-executing them in managable chunks.</p></li>
+<li><p>A pattern for writing <strong>projection- and scale-agnostic
+analyses</strong> of COGs, and</p></li>
+<li><p>Methods for <strong>previewing</strong> the results of these analyses and
+executing them in managable <strong>chunks</strong>.</p></li>
 </ol>
 <p>Under the hood, cog_worker is just a wrapper around <a class="reference external" href="https://cogeotiff.github.io/rio-tiler/">rio-tiler</a>.
 It does dynamic reprojection and rescaling of input data,
@@ -254,7 +254,7 @@ scientific python tools.</p>
 <ul class="simple">
 <li><p><a class="reference external" href="https://cogeotiff.github.io/rio-cogeo/">rio-cogeo</a> Cloud Optimized GeoTIFF (COG) creation and validation plugin for Rasterio. (Need to turn your data into COGs?)</p></li>
 <li><p><a class="reference external" href="https://developmentseed.org/titiler">titiler</a> - A modern dynamic tile server built on top of FastAPI and Rasterio/GDAL. (Need to serve COGs as tiles for a webmap?)</p></li>
-<li><p><a class="reference external" href="http://xarray.pydata.org">xarray</a> - N-D labeled arrays and datasets in Python. (All your data already in the same projection/scale?)</p></li>
+<li><p><a class="reference external" href="https://stackstac.readthedocs.io/en/latest/index.html">stackstac</a> - Easier cloud-native geoprocessing. (All your data have the same projection/scale?)</p></li>
 </ul>
 <p>Dependencies:</p>
 <ul class="simple">

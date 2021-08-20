@@ -12,16 +12,16 @@ Scalable geospatial analysis on `Cloud Optimized GeoTIFFs (COGs) <https://www.co
    examples
    api_reference
 
-cog_worker is a simple library to help write scripts to conduct scaleable
-analysis of gridded data. It's intended to be useful for moderate- to large-scale 
-GIS, remote sensing, and machine learning applications.
+cog_worker is a simple python library to help write and chunk
+analyses of gridded data for applications including GIS, remote sensing, 
+and machine learning.
 
-In practice, it provides two things:
+It provides two things:
 
-1. A pattern for writing projection- and scale-agnostic 
-   analyses of COGs, and
-2. Methods for previewing the results of these analyses and
-   executing them in managable chunks.
+1. A pattern for writing **projection- and scale-agnostic 
+   analyses** of COGs, and
+2. Methods for **previewing** the results of these analyses and
+   executing them in managable **chunks**.
 
 Under the hood, cog_worker is just a wrapper around `rio-tiler <https://cogeotiff.github.io/rio-tiler/>`_.
 It does dynamic reprojection and rescaling of input data, 
@@ -78,7 +78,7 @@ Other tools:
 
 - `rio-cogeo <https://cogeotiff.github.io/rio-cogeo/>`_ Cloud Optimized GeoTIFF (COG) creation and validation plugin for Rasterio. (Need to turn your data into COGs?)
 - `titiler <https://developmentseed.org/titiler>`_ - A modern dynamic tile server built on top of FastAPI and Rasterio/GDAL. (Need to serve COGs as tiles for a webmap?)
-- `xarray <http://xarray.pydata.org>`_ - N-D labeled arrays and datasets in Python. (All your data already in the same projection/scale?)
+- `stackstac <https://stackstac.readthedocs.io/en/latest/index.html>`_ - Easier cloud-native geoprocessing. (All your data have the same projection/scale?)
 
 Dependencies:
 
