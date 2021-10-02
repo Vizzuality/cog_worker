@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Create a custom tile server" href="3.%20tile-server.html" /><link rel="prev" title="Quick start" href="1.%20quick-start.html" />
 
     <meta name="generator" content="sphinx-4.1.2, furo 2021.08.11.beta42"/>
-        <title>Tutorial example - Cog Worker 0.1.2 documentation</title>
+        <title>Tutorial example - Cog Worker 0.1.3 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=197f00461d56902ea7ca048ec6e6ba026f62c97b" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?digest=93475b62d1c3bc01323a0eefdc14a62d77b12690" />
@@ -120,7 +120,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../index.html"><div class="brand">Cog Worker 0.1.2 documentation</div></a>
+      <a href="../index.html"><div class="brand">Cog Worker 0.1.3 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -143,7 +143,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
   
   
-  <span class="sidebar-brand-text">Cog Worker 0.1.2 documentation</span>
+  <span class="sidebar-brand-text">Cog Worker 0.1.3 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
   <input class="sidebar-search" placeholder=Search name="q" aria-label="Search">
@@ -446,7 +446,7 @@ div.rendered_html tbody tr:hover {
 <p>For this example, we’ll calculate the distance to the nearest road using a global road raster derived from Open Street Map. Our goal will be to compute this at a 1km resolution in globally in the Molleweide equal-area projection, but we’ll approach the analysis in steps.</p>
 <p>There are a couple extra dependencies: - We’ll use <code class="docutils literal notranslate"><span class="pre">mahotas</span></code> to compute a fast distance transform. - We’ll also use <code class="docutils literal notranslate"><span class="pre">shapely</span></code> and <code class="docutils literal notranslate"><span class="pre">geopandas</span></code> to preview the geometries of the chunks.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -454,8 +454,10 @@ div.rendered_html tbody tr:hover {
 <span class="c1">#!pip install --quiet mahotas shapely geopandas</span>
 
 <span class="kn">import</span> <span class="nn">mahotas</span>
-<span class="kn">import</span> <span class="nn">rasterio</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">rasterio.plot</span> <span class="kn">import</span> <span class="n">show</span>
+<span class="kn">from</span> <span class="nn">cog_worker</span> <span class="kn">import</span> <span class="n">Manager</span>
+
 </pre></div>
 </div>
 </div>
@@ -463,7 +465,7 @@ div.rendered_html tbody tr:hover {
 <h2>Setup<a class="headerlink" href="#Setup" title="Permalink to this headline">¶</a></h2>
 <p>First we’ll define our output bounds, scale, and projection using a <code class="docutils literal notranslate"><span class="pre">cog_worker.Manager</span></code>. You’ll use the manager to preview or execute the analysis.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -481,7 +483,7 @@ div.rendered_html tbody tr:hover {
 <p>Next we’ll try reading the COG. We write a function that will recieve a <code class="docutils literal notranslate"><span class="pre">cog_worker.Worker</span></code> as its first parameter. The worker keeps track of the scope of the analysis and provides the <code class="docutils literal notranslate"><span class="pre">cog_worker.Worker.read()</span></code> function that will automatically reproject and rescale the source data to the output that scope you’re tarketing.</p>
 <p>We can preview this analysis at a reduced resolution by passing the function to the <code class="docutils literal notranslate"><span class="pre">cog_worker.Manager.preview()</span></code>. When executing an analysis the Manger will create a <code class="docutils literal notranslate"><span class="pre">cog_worker.Worker</span></code>, and pass it to your fuction.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -501,10 +503,11 @@ div.rendered_html tbody tr:hover {
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_2._tutorial_5_0.svg" src="../_images/examples_2._tutorial_5_0.svg"/></div>
+<img alt="../_images/examples_2._tutorial_5_0.png" src="../_images/examples_2._tutorial_5_0.png"/>
+</div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -514,7 +517,7 @@ div.rendered_html tbody tr:hover {
 </div>
 <p>Let’s add some analysis. <code class="docutils literal notranslate"><span class="pre">worker.read</span></code> returns a Numpy masked array so we can use many different libraries to operate on it.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -541,10 +544,11 @@ div.rendered_html tbody tr:hover {
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_2._tutorial_7_0.svg" src="../_images/examples_2._tutorial_7_0.svg"/></div>
+<img alt="../_images/examples_2._tutorial_7_0.png" src="../_images/examples_2._tutorial_7_0.png"/>
+</div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -553,8 +557,8 @@ div.rendered_html tbody tr:hover {
 </pre></div></div>
 </div>
 <p>Next since we want to compute actual distance, we should multiple the result of the distance function, which measures pixels, by the current scale of the analysis.</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -578,27 +582,12 @@ div.rendered_html tbody tr:hover {
 </pre></div>
 </div>
 </div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<img alt="../_images/examples_2._tutorial_9_0.svg" src="../_images/examples_2._tutorial_9_0.svg"/></div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
-</pre></div>
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-&lt;AxesSubplot:&gt;
-</pre></div></div>
-</div>
 </div>
 <div class="section" id="Previewing-analysis">
 <h2>Previewing analysis<a class="headerlink" href="#Previewing-analysis" title="Permalink to this headline">¶</a></h2>
 <p>You can try zooming in or modifying the parameters in other ways. The <code class="docutils literal notranslate"><span class="pre">preview</span></code> function will change the scale to fit within 1024x1024px.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -616,17 +605,18 @@ div.rendered_html tbody tr:hover {
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_2._tutorial_11_0.svg" src="../_images/examples_2._tutorial_11_0.svg"/></div>
+<img alt="../_images/examples_2._tutorial_11_0.png" src="../_images/examples_2._tutorial_11_0.png"/>
+</div>
 </div>
 <div class="nboutput docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_2._tutorial_11_1.svg" src="../_images/examples_2._tutorial_11_1.svg"/></div>
+<img alt="../_images/examples_2._tutorial_11_1.png" src="../_images/examples_2._tutorial_11_1.png"/>
+</div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
-</pre></div>
+<div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
@@ -640,7 +630,7 @@ div.rendered_html tbody tr:hover {
 <p>We’ll use the <code class="docutils literal notranslate"><span class="pre">cog_worker.Manager</span></code> to chunk our analysis into chunks of 4096x4096 px.</p>
 <p>When dividing the analysis into chunks, we need to account for roads that might be outside the tile. We can do this by setting the <code class="docutils literal notranslate"><span class="pre">buffer</span></code> relative to the scale of our analysis, and the maximum distance that we care about. The worker will read <code class="docutils literal notranslate"><span class="pre">buffer</span></code> extra pixels outside of its bounds, make them available for computation, and then discard them before saving the results.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -658,7 +648,7 @@ div.rendered_html tbody tr:hover {
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -685,8 +675,16 @@ div.rendered_html tbody tr:hover {
 </div>
 </div>
 <div class="nboutput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
-</pre></div>
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+/usr/local/homebrew/lib/python3.9/site-packages/geopandas/_compat.py:106: UserWarning: The Shapely GEOS version (3.8.0-CAPI-1.13.1 ) is incompatible with the GEOS version PyGEOS was compiled with (3.9.1-CAPI-1.14.2). Conversions between both will be slow.
+  warnings.warn(
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
@@ -697,17 +695,19 @@ div.rendered_html tbody tr:hover {
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_2._tutorial_14_1.svg" src="../_images/examples_2._tutorial_14_1.svg"/></div>
+<img alt="../_images/examples_2._tutorial_14_2.png" src="../_images/examples_2._tutorial_14_2.png"/>
+</div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_2._tutorial_14_2.svg" src="../_images/examples_2._tutorial_14_2.svg"/></div>
+<img alt="../_images/examples_2._tutorial_14_3.png" src="../_images/examples_2._tutorial_14_3.png"/>
+</div>
 </div>
 <p>Finally, execute the full analysis in 4096x4096 chunks saving the results to output.tif</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>

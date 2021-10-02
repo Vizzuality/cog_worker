@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" />
 
     <meta name="generator" content="sphinx-4.1.2, furo 2021.08.11.beta42"/>
-        <title>cog_worker.worker - Cog Worker 0.1.2 documentation</title>
+        <title>cog_worker.worker - Cog Worker 0.1.3 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?digest=197f00461d56902ea7ca048ec6e6ba026f62c97b" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?digest=93475b62d1c3bc01323a0eefdc14a62d77b12690" />
@@ -120,7 +120,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../index.html"><div class="brand">Cog Worker 0.1.2 documentation</div></a>
+      <a href="../../index.html"><div class="brand">Cog Worker 0.1.3 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -143,7 +143,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../../index.html">
   
   
-  <span class="sidebar-brand-text">Cog Worker 0.1.2 documentation</span>
+  <span class="sidebar-brand-text">Cog Worker 0.1.3 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="../../search.html" role="search">
   <input class="sidebar-search" placeholder=Search name="q" aria-label="Search">
@@ -223,8 +223,8 @@
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">rio_tiler.errors</span> <span class="kn">import</span> <span class="n">EmptyMosaicError</span>
 <span class="kn">from</span> <span class="nn">rio_tiler.models</span> <span class="kn">import</span> <span class="n">ImageData</span>
-<span class="kn">from</span> <span class="nn">rio_tiler.io</span> <span class="kn">import</span> <span class="n">COGReader</span>
-<span class="kn">from</span> <span class="nn">rio_tiler.mosaic</span> <span class="kn">import</span> <span class="n">mosaic_reader</span>
+<span class="kn">from</span> <span class="nn">rio_tiler.io.cogeo</span> <span class="kn">import</span> <span class="n">COGReader</span>
+<span class="kn">from</span> <span class="nn">rio_tiler.mosaic.reader</span> <span class="kn">import</span> <span class="n">mosaic_reader</span>
 
 <span class="kn">from</span> <span class="nn">cog_worker.types</span> <span class="kn">import</span> <span class="n">BoundingBox</span>
 <span class="kn">from</span> <span class="nn">cog_worker.utils</span> <span class="kn">import</span> <span class="n">_bbox_size</span><span class="p">,</span> <span class="n">_get_profile</span>
@@ -413,9 +413,9 @@
             <span class="n">writer</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">arr</span><span class="p">)</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ma</span><span class="o">.</span><span class="n">MaskedArray</span><span class="p">):</span>
                 <span class="n">mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ma</span><span class="o">.</span><span class="n">getmask</span><span class="p">(</span><span class="n">arr</span><span class="p">)</span>
-                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">arr</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">mask</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
                     <span class="n">mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">mask</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-                <span class="n">writer</span><span class="o">.</span><span class="n">write_mask</span><span class="p">(</span><span class="n">mask</span><span class="p">)</span></div>
+                <span class="n">writer</span><span class="o">.</span><span class="n">write_mask</span><span class="p">(</span><span class="o">~</span><span class="n">mask</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Worker.clip_buffer"><a class="viewcode-back" href="../../cog_worker/1.%20worker.html#cog_worker.worker.Worker.clip_buffer">[docs]</a>    <span class="k">def</span> <span class="nf">clip_buffer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arr</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
         <span class="sd">"""Clip the buffer pixels from an array if they exist.</span>
