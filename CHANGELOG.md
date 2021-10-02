@@ -1,11 +1,12 @@
 # CHANGELOG
 
-## v0.1.3 - unreleased
+## v0.1.3 - 2021-10-02
 
 ### Fixed
 
+- Fix tutorial notebooks
 - Limit number of retries on CPLE_AppDefinedError failures on COG reads
-
+- Fix inverted masks being written
 
 ## v0.1.2 - 2021-08-18
 
