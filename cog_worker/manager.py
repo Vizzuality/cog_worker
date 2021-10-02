@@ -301,9 +301,9 @@ class Manager:
         writer.write(arr, window=window)
         if isinstance(arr, np.ma.MaskedArray):
             mask = np.ma.getmask(arr)
-            if len(arr.shape) == 3:
+            if len(mask.shape) == 3:
                 mask = np.any(mask, axis=0)
-            writer.write_mask(mask, window=window)
+            writer.write_mask(~mask, window=window)
 
     def chunk_params(self, chunksize: int = 512, **kwargs):
         """Generate parameters to execute a function in chunks.

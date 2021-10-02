@@ -59,16 +59,19 @@ def test_read(mercator_worker):
 
 def test_write(mercator_worker):
     arr = mercator_worker.read(TEST_COG)
+    clipped_arr = mercator_worker.clip_buffer(arr)
     with MemoryFile() as memfile:
-        mercator_worker.write(arr, memfile)
-        memfile.seek(0)
-        with rio.open(memfile) as src:
-            written = src.read(masked=True)
-            assert (written.shape[1], written.shape[2]) == (
-                mercator_worker.height,
-                mercator_worker.width,
-            )
-            assert written.sum() == mercator_worker.clip_buffer(arr).sum()
+        with rio.Env(GDAL_TIFF_INTERNAL_MASK=True):
+            mercator_worker.write(arr, memfile)
+            memfile.seek(0)
+            with rio.open(memfile) as src:
+                written = src.read(masked=True)
+                assert (written.shape[1], written.shape[2]) == (
+                    mercator_worker.height,
+                    mercator_worker.width,
+                )
+                assert written.sum() == clipped_arr.sum()
+                assert written.mask.sum() == clipped_arr.mask.sum()
 
 
 def test_clip_buffer(mercator_worker):
