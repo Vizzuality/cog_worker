@@ -68,13 +68,14 @@ def test_chunk_save(molleweide_manager, sample_function):
 def test__write_chunk(molleweide_manager, sample_function):
     with MemoryFile() as memfile:
         arr, bbox = molleweide_manager.execute(sample_function)
+        print(arr.mask.sum())
         with molleweide_manager._open_writer(memfile, 1, rio.ubyte) as writer:
             molleweide_manager._write_chunk(writer, arr, bbox)
         memfile.seek(0)
         with rio.open(memfile) as src:
-            print(arr.shape)
-            print(src.shape)
-            assert (src.read() == arr).all()
+            written = src.read(masked=True)
+            assert (written == arr).all()
+            assert (written.mask == arr.mask).all()
 
 
 def test__chunk_bounds(molleweide_manager):

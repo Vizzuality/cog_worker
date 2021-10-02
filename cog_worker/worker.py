@@ -27,8 +27,8 @@ from rasterio._err import CPLE_AppDefinedError
 import numpy as np
 from rio_tiler.errors import EmptyMosaicError
 from rio_tiler.models import ImageData
-from rio_tiler.io import COGReader
-from rio_tiler.mosaic import mosaic_reader
+from rio_tiler.io.cogeo import COGReader
+from rio_tiler.mosaic.reader import mosaic_reader
 
 from cog_worker.types import BoundingBox
 from cog_worker.utils import _bbox_size, _get_profile
@@ -217,9 +217,9 @@ class Worker:
             writer.write(arr)
             if isinstance(arr, np.ma.MaskedArray):
                 mask = np.ma.getmask(arr)
-                if len(arr.shape) == 3:
+                if len(mask.shape) == 3:
                     mask = np.any(mask, axis=0)
-                writer.write_mask(mask)
+                writer.write_mask(~mask)
 
     def clip_buffer(self, arr: np.ndarray) -> np.ndarray:
         """Clip the buffer pixels from an array if they exist.
