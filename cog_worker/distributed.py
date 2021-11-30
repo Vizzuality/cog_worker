@@ -173,5 +173,6 @@ class DaskManager(cog_worker.manager.Manager):
                 futures, with_results=True
             ):
                 yield result
-        for t in tasks:
-            yield t  # type: ignore
+        else:
+            for t in tasks:
+                yield t  # type: ignore
