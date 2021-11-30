@@ -17,11 +17,11 @@ setup(
     packages=["cog_worker"],
     keywords="cog geotiff raster gdal rasterio dask",
     install_requires=[
-        "numpy",
-        "pyproj",
-        "rasterio",
-        "morecantile",
-        "rio_tiler",
+        "numpy>=1,<2",
+        "pyproj>=3.0.0,<4",
+        "rasterio>=1.2,<2",
+        "morecantile>=3.0.0,<4",
+        "rio_tiler>=3.0.0,<4",
     ],
     extras_require={
         "test": ["pytest"],
