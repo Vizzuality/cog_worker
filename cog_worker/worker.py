@@ -179,11 +179,11 @@ class Worker:
         width, height = _bbox_size(proj_bounds, self._scale)
 
         if isinstance(src, str):
-            img = _read_COG(src, proj_bounds, self._proj.srs, width, height, **kwargs)
+            img = _read_COG(src, proj_bounds, self._proj.crs, width, height, **kwargs)
         elif isinstance(src, Sequence):
             try:
                 img, asset = mosaic_reader(
-                    src, _read_COG, proj_bounds, self.proj.srs, width, height, **kwargs
+                    src, _read_COG, proj_bounds, self.proj.crs, width, height, **kwargs
                 )
             except EmptyMosaicError:
                 return self.empty(mask=True)
@@ -264,10 +264,10 @@ def _read_COG(
     **kwargs,
 ) -> ImageData:
     """Read part of a COG, warping and resampling to a target shape."""
-    tries = 0
-    while tries <= 10:
+    tries = 6
+    while tries > 0:
         try:
-            with COGReader(filepath=asset, **kwargs) as cog:  # type: ignore
+            with COGReader(asset, **kwargs) as cog:  # type: ignore
                 return cog.part(
                     proj_bounds,
                     bounds_crs=crs,
@@ -280,5 +280,7 @@ def _read_COG(
             # Ignore some strange GDAL errors when reading in some projections
             # see: https://rasterio.groups.io/g/main/message/780
             logger.debug(e)
-        tries += 1
+            if tries <= 1:
+                raise e
+        tries -= 1
     raise Exception(f"Failed reading asset {asset}")

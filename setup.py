@@ -6,7 +6,7 @@ with open("README.md") as f:
 
 setup(
     name="cog_worker",
-    version="0.1.3",
+    version="0.1.4",
     description="Scalable geospatial analysis on Cloud Optimized GeoTIFFs.",
     long_description=desc,
     long_description_content_type="text/markdown",
@@ -17,11 +17,11 @@ setup(
     packages=["cog_worker"],
     keywords="cog geotiff raster gdal rasterio dask",
     install_requires=[
-        "numpy",
-        "pyproj",
-        "rasterio",
-        "morecantile",
-        "rio_tiler",
+        "numpy>=1,<2",
+        "pyproj>=3.0.0,<4",
+        "rasterio>=1.2,<2",
+        "morecantile>=3.0.0,<4",
+        "rio_tiler>=3.0.0,<4",
     ],
     extras_require={
         "test": ["pytest"],

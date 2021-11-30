@@ -32,6 +32,7 @@ import logging
 
 import dask
 import dask.distributed
+from dask.delayed import Delayed
 from pyproj import Proj
 
 import cog_worker
@@ -81,8 +82,9 @@ class DaskManager(cog_worker.manager.Manager):
         f_args: Iterable = None,
         f_kwargs: Mapping = None,
         clip: bool = True,
+        compute: bool = True,
         **kwargs
-    ) -> Tuple[Any, BoundingBox]:
+    ) -> Union[Tuple[Any, BoundingBox], Delayed]:
         """Execute a cog_worker function in the DaskManager's cluster.
 
         The execute method is the underlying method for running analysis. By
@@ -103,12 +105,14 @@ class DaskManager(cog_worker.manager.Manager):
                 function.
             clip (bool): Whether or not to clip the `buffer` from the completed
                 analysis.
+            compute (bool): Whether or not to compute the chunks immediately.
             **kwargs: Additional keyword arguments to overload the Manager's
                 properties. (bounds, proj, scale, or buffer)
 
         Returns:
             A tuple containing the return value of the function and the bounding
-            box of the executed analysis in the target projection.
+            box of the executed analysis in the target projection. Or, if
+            compute is False, a Delayed object.
         """
         args = {
             "f": f,
@@ -121,8 +125,11 @@ class DaskManager(cog_worker.manager.Manager):
             "clip": clip,
         }
         args.update(kwargs)
-        future = self.client.submit(cog_worker.manager._execute, **args)
-        return future.result()
+        task = dask.delayed(cog_worker.manager._execute)(**args)
+        if compute:
+            future = self.client.compute(task)
+            return future.result()  # type: ignore
+        return task
 
     def chunk_execute(
         self,
@@ -130,7 +137,8 @@ class DaskManager(cog_worker.manager.Manager):
         f_args: Iterable = None,
         f_kwargs: Mapping = None,
         chunksize: int = 512,
-    ) -> Iterator[Tuple[Any, BoundingBox]]:
+        compute: bool = True,
+    ) -> Union[Iterator[Tuple[Any, BoundingBox]], Iterator[Delayed]]:
         """Compute chunks in parallel in the DaskManager's cluster.
 
         Chunks will be yielded as they are completed. The order in which they
@@ -148,17 +156,23 @@ class DaskManager(cog_worker.manager.Manager):
             f_kwargs (dict): Additional keyword arguments to pass to the
                 function.
             chunksize (int): Size of the chunks in pixels (excluding buffer).
+            compute (bool): Whether or not to compute the chunks immediately.
 
         Yields:
             A tuple containing the return value of the function for each chunk
             and the bounding box of the executed analysis in the target
-            projection.
+            projection. Or, if compute is False, a Delayed object for each chunk.
         """
         tasks = [
             dask.delayed(cog_worker.manager._execute)(f, f_args, f_kwargs, **params)
             for params in self.chunk_params(chunksize)
         ]
-        futures = self.client.compute(tasks)
-
-        for future, result in dask.distributed.as_completed(futures, with_results=True):
-            yield result
+        if compute:
+            futures = self.client.compute(tasks)
+            for future, result in dask.distributed.as_completed(
+                futures, with_results=True
+            ):
+                yield result
+        else:
+            for t in tasks:
+                yield t  # type: ignore

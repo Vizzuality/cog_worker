@@ -35,7 +35,6 @@ from typing import IO, Iterable, Iterator, Mapping, Optional, Tuple, Type, Union
 import numpy as np
 import morecantile
 from pyproj import Proj
-from rasterio.crs import CRS
 import rasterio as rio
 from rasterio.io import DatasetWriter
 import rasterio.windows
@@ -77,7 +76,7 @@ class Manager:
         self.buffer = buffer
         self._proj_bounds = self.proj.transform_bounds(*bounds)
         self.tms = morecantile.TileMatrixSet.custom(
-            list(self._proj_bounds), CRS.from_user_input(proj)
+            list(self._proj_bounds), self.proj.crs
         )
 
     def execute(
