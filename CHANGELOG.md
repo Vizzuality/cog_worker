@@ -1,5 +1,16 @@
 # CHANGELOG
 
+## UNRELEASED - 2021-11-23
+
+### Changed
+
+- Update to depend on rio_tiler v3 and morecantile v3
+
+### Added
+
+- Add parameter `compute=False` to have DaskManager return Delayed objects 
+  instead of computing immediately.
+
 ## v0.1.3 - 2021-10-02
 
 ### Fixed
