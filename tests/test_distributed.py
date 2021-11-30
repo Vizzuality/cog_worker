@@ -40,7 +40,15 @@ def test_execute(daskmanager, manager, sample_function):
     ).all()
 
 
-def test_chunk_execute(daskmanager, manager, sample_function):
+def test_chunk_execute(daskmanager, sample_function):
+    futures = daskmanager.client.compute(
+        daskmanager.chunk_execute(sample_function, compute=False)
+    )
+    results = daskmanager.client.gather(futures)
+    assert all(isinstance(results[1], tuple) for results in results)
+
+
+def test_chunk_save(daskmanager, manager, sample_function):
     with MemoryFile() as m1, MemoryFile() as m2:
         daskmanager.chunk_save(m1, sample_function)
         manager.chunk_save(m2, sample_function)
