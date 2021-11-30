@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" />
 
     <meta name="generator" content="sphinx-4.1.2, furo 2021.08.11.beta42"/>
-        <title>cog_worker.distributed - Cog Worker 0.1.2 documentation</title>
+        <title>cog_worker.distributed - Cog Worker 0.1.4 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?digest=197f00461d56902ea7ca048ec6e6ba026f62c97b" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?digest=93475b62d1c3bc01323a0eefdc14a62d77b12690" />
@@ -120,7 +120,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../index.html"><div class="brand">Cog Worker 0.1.2 documentation</div></a>
+      <a href="../../index.html"><div class="brand">Cog Worker 0.1.4 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -143,7 +143,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../../index.html">
   
   
-  <span class="sidebar-brand-text">Cog Worker 0.1.2 documentation</span>
+  <span class="sidebar-brand-text">Cog Worker 0.1.4 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="../../search.html" role="search">
   <input class="sidebar-search" placeholder=Search name="q" aria-label="Search">
@@ -228,6 +228,7 @@
 
 <span class="kn">import</span> <span class="nn">dask</span>
 <span class="kn">import</span> <span class="nn">dask.distributed</span>
+<span class="kn">from</span> <span class="nn">dask.delayed</span> <span class="kn">import</span> <span class="n">Delayed</span>
 <span class="kn">from</span> <span class="nn">pyproj</span> <span class="kn">import</span> <span class="n">Proj</span>
 
 <span class="kn">import</span> <span class="nn">cog_worker</span>
@@ -277,8 +278,9 @@
         <span class="n">f_args</span><span class="p">:</span> <span class="n">Iterable</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">f_kwargs</span><span class="p">:</span> <span class="n">Mapping</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">clip</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">compute</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
         <span class="o">**</span><span class="n">kwargs</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">BoundingBox</span><span class="p">]:</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">BoundingBox</span><span class="p">],</span> <span class="n">Delayed</span><span class="p">]:</span>
         <span class="sd">"""Execute a cog_worker function in the DaskManager's cluster.</span>
 
 <span class="sd">        The execute method is the underlying method for running analysis. By</span>
@@ -299,12 +301,14 @@
 <span class="sd">                function.</span>
 <span class="sd">            clip (bool): Whether or not to clip the `buffer` from the completed</span>
 <span class="sd">                analysis.</span>
+<span class="sd">            compute (bool): Whether or not to compute the chunks immediately.</span>
 <span class="sd">            **kwargs: Additional keyword arguments to overload the Manager's</span>
 <span class="sd">                properties. (bounds, proj, scale, or buffer)</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            A tuple containing the return value of the function and the bounding</span>
-<span class="sd">            box of the executed analysis in the target projection.</span>
+<span class="sd">            box of the executed analysis in the target projection. Or, if</span>
+<span class="sd">            compute is False, a Delayed object.</span>
 <span class="sd">        """</span>
         <span class="n">args</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s2">"f"</span><span class="p">:</span> <span class="n">f</span><span class="p">,</span>
@@ -317,8 +321,11 @@
             <span class="s2">"clip"</span><span class="p">:</span> <span class="n">clip</span><span class="p">,</span>
         <span class="p">}</span>
         <span class="n">args</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
-        <span class="n">future</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">submit</span><span class="p">(</span><span class="n">cog_worker</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">_execute</span><span class="p">,</span> <span class="o">**</span><span class="n">args</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">future</span><span class="o">.</span><span class="n">result</span><span class="p">()</span></div>
+        <span class="n">task</span> <span class="o">=</span> <span class="n">dask</span><span class="o">.</span><span class="n">delayed</span><span class="p">(</span><span class="n">cog_worker</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">_execute</span><span class="p">)(</span><span class="o">**</span><span class="n">args</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">compute</span><span class="p">:</span>
+            <span class="n">future</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">compute</span><span class="p">(</span><span class="n">task</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">future</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>  <span class="c1"># type: ignore</span>
+        <span class="k">return</span> <span class="n">task</span></div>
 
 <div class="viewcode-block" id="DaskManager.chunk_execute"><a class="viewcode-back" href="../../cog_worker/3.%20distributed.html#cog_worker.distributed.DaskManager.chunk_execute">[docs]</a>    <span class="k">def</span> <span class="nf">chunk_execute</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -326,7 +333,8 @@
         <span class="n">f_args</span><span class="p">:</span> <span class="n">Iterable</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">f_kwargs</span><span class="p">:</span> <span class="n">Mapping</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">chunksize</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">512</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">BoundingBox</span><span class="p">]]:</span>
+        <span class="n">compute</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">Iterator</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">BoundingBox</span><span class="p">]],</span> <span class="n">Iterator</span><span class="p">[</span><span class="n">Delayed</span><span class="p">]]:</span>
         <span class="sd">"""Compute chunks in parallel in the DaskManager's cluster.</span>
 
 <span class="sd">        Chunks will be yielded as they are completed. The order in which they</span>
@@ -344,20 +352,26 @@
 <span class="sd">            f_kwargs (dict): Additional keyword arguments to pass to the</span>
 <span class="sd">                function.</span>
 <span class="sd">            chunksize (int): Size of the chunks in pixels (excluding buffer).</span>
+<span class="sd">            compute (bool): Whether or not to compute the chunks immediately.</span>
 
 <span class="sd">        Yields:</span>
 <span class="sd">            A tuple containing the return value of the function for each chunk</span>
 <span class="sd">            and the bounding box of the executed analysis in the target</span>
-<span class="sd">            projection.</span>
+<span class="sd">            projection. Or, if compute is False, a Delayed object for each chunk.</span>
 <span class="sd">        """</span>
         <span class="n">tasks</span> <span class="o">=</span> <span class="p">[</span>
             <span class="n">dask</span><span class="o">.</span><span class="n">delayed</span><span class="p">(</span><span class="n">cog_worker</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">_execute</span><span class="p">)(</span><span class="n">f</span><span class="p">,</span> <span class="n">f_args</span><span class="p">,</span> <span class="n">f_kwargs</span><span class="p">,</span> <span class="o">**</span><span class="n">params</span><span class="p">)</span>
             <span class="k">for</span> <span class="n">params</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">chunk_params</span><span class="p">(</span><span class="n">chunksize</span><span class="p">)</span>
         <span class="p">]</span>
-        <span class="n">futures</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">compute</span><span class="p">(</span><span class="n">tasks</span><span class="p">)</span>
-
-        <span class="k">for</span> <span class="n">future</span><span class="p">,</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">dask</span><span class="o">.</span><span class="n">distributed</span><span class="o">.</span><span class="n">as_completed</span><span class="p">(</span><span class="n">futures</span><span class="p">,</span> <span class="n">with_results</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-            <span class="k">yield</span> <span class="n">result</span></div></div>
+        <span class="k">if</span> <span class="n">compute</span><span class="p">:</span>
+            <span class="n">futures</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">compute</span><span class="p">(</span><span class="n">tasks</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">future</span><span class="p">,</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">dask</span><span class="o">.</span><span class="n">distributed</span><span class="o">.</span><span class="n">as_completed</span><span class="p">(</span>
+                <span class="n">futures</span><span class="p">,</span> <span class="n">with_results</span><span class="o">=</span><span class="kc">True</span>
+            <span class="p">):</span>
+                <span class="k">yield</span> <span class="n">result</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">tasks</span><span class="p">:</span>
+                <span class="k">yield</span> <span class="n">t</span>  <span class="c1"># type: ignore</span></div></div>
 </pre></div>
       </article>
       <footer>
