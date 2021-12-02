@@ -27,7 +27,7 @@ Example:
         results = manager.chunk_execute(my_analysis)
         total = sum(results)
 """
-from typing import Iterable, Iterator, Mapping, Union, Tuple, Any
+from typing import Iterable, Iterator, List, Mapping, Union, Tuple, Any
 import logging
 
 import dask
@@ -131,14 +131,14 @@ class DaskManager(cog_worker.manager.Manager):
             return future.result()  # type: ignore
         return task
 
-    def chunk_execute(
+    def chunk_execute(  # type: ignore
         self,
         f: WorkerFunction,
         f_args: Iterable = None,
         f_kwargs: Mapping = None,
         chunksize: int = 512,
         compute: bool = True,
-    ) -> Union[Iterator[Tuple[Any, BoundingBox]], Iterator[Delayed]]:
+    ) -> Union[Iterator[Tuple[Any, BoundingBox]], List[Delayed]]:
         """Compute chunks in parallel in the DaskManager's cluster.
 
         Chunks will be yielded as they are completed. The order in which they
@@ -174,5 +174,4 @@ class DaskManager(cog_worker.manager.Manager):
             ):
                 yield result
         else:
-            for t in tasks:
-                yield t  # type: ignore
+            return tasks

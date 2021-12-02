@@ -1,12 +1,20 @@
 # CHANGELOG
 
+## UNRELEASED
+
+### Changed
+
+- DaskManager.chunk_execute(compute=False) returns a List of Delayeds instead of
+  a Generator
+
+
 ## v0.1.4 - 2021-11-29
 
 ### Changed
 
 - Update to depend on rio_tiler v3 and morecantile v3
 
-### Addedgi
+### Added
 
 - Add parameter `compute=False` to have DaskManager return Delayed objects 
   instead of computing immediately.

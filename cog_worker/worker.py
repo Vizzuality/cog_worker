@@ -265,9 +265,10 @@ def _read_COG(
 ) -> ImageData:
     """Read part of a COG, warping and resampling to a target shape."""
     tries = 6
+    exc = None
     while tries > 0:
-        try:
-            with COGReader(asset, **kwargs) as cog:  # type: ignore
+        with COGReader(asset, **kwargs) as cog:  # type: ignore
+            try:
                 return cog.part(
                     proj_bounds,
                     bounds_crs=crs,
@@ -276,11 +277,11 @@ def _read_COG(
                     width=width,
                     height=height,
                 )
-        except CPLE_AppDefinedError as e:
-            # Ignore some strange GDAL errors when reading in some projections
-            # see: https://rasterio.groups.io/g/main/message/780
-            logger.debug(e)
-            if tries <= 1:
-                raise e
+            except CPLE_AppDefinedError as e:
+                # Ignore some strange GDAL errors when reading in some projections
+                # see: https://rasterio.groups.io/g/main/message/780
+                exc = e
         tries -= 1
+    if exc:
+        raise exc
     raise Exception(f"Failed reading asset {asset}")

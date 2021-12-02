@@ -211,6 +211,7 @@ class Manager:
         f_args: Iterable = None,
         f_kwargs: Mapping = None,
         chunksize: int = 512,
+        **kwargs
     ) -> Iterator[Tuple[Any, BoundingBox]]:
         """Return a generator that executes a function on chunks of at most `chunksize` pixels.
 
