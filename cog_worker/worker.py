@@ -261,12 +261,13 @@ def _read_COG(
     crs: Union[str, int, Proj],
     width: int,
     height: int,
+    __retries: int = 6,
     **kwargs,
 ) -> ImageData:
     """Read part of a COG, warping and resampling to a target shape."""
-    tries = 6
     exc = None
-    while tries > 0:
+    __retries = max(0, __retries)
+    while __retries >= 0:
         with COGReader(asset, **kwargs) as cog:  # type: ignore
             try:
                 return cog.part(
@@ -281,7 +282,7 @@ def _read_COG(
                 # Ignore some strange GDAL errors when reading in some projections
                 # see: https://rasterio.groups.io/g/main/message/780
                 exc = e
-        tries -= 1
+        __retries -= 1
     if exc:
         raise exc
     raise Exception(f"Failed reading asset {asset}")
