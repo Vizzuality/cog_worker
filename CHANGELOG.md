@@ -7,6 +7,15 @@
 - DaskManager.chunk_execute(compute=False) returns a List of Delayeds instead of
   a Generator
 
+### Added
+
+- Worker.read() takes an optional masked parameter, when set to False, ignores 
+  dataset mask.
+
+### Fixed
+
+- Fixed issue where Worker.lnglat_bounds() would fail inverse transforms for 
+  chunks >10000 px
 
 ## v0.1.4 - 2021-11-29
 

@@ -124,6 +124,7 @@ class Worker:
             buffered (bool): Buffer the Worker's bounding box.
         """
         pts = max(self.width, self.height) + (buffered * self.buffer * 2) - 1
+        pts = min(pts, 10000)
         bounds = self.xy_bounds(buffered)
         return self.proj.transform_bounds(
             *bounds, pts, direction=TransformDirection.INVERSE
@@ -144,7 +145,7 @@ class Worker:
             arr = np.ma.array(arr, mask=_mask)
         return arr
 
-    def read(self, src: Union[str, Sequence[str]], **kwargs) -> np.ma.MaskedArray:
+    def read(self, src: Union[str, Sequence[str]], masked=True, **kwargs) -> np.ndarray:
         """Read a COG, reprojecting and clipping as necessary.
 
         The read method uses ``rio_tiler.COGReader`` to takes advantage of the
@@ -164,6 +165,7 @@ class Worker:
 
         Args:
             src (str, list): The data source to read or list of sources to mosiac.
+            masked (bool): Return a Numpy masked array, otherwise ignore dataset mask.
             **kwargs: Additional keyword arguments to pass to ``rio_tiler.COGReader.part``
                 or ``rio_tiler.mosaic_reader``. See: https://cogeotiff.github.io/rio-tiler/.
 
@@ -189,8 +191,11 @@ class Worker:
                 return self.empty(mask=True)
 
         arr = img.data
-        mask = (img.mask == 0) | np.isnan(arr)
 
+        if not masked:
+            return arr
+
+        mask = (img.mask == 0) | np.isnan(arr)
         return np.ma.array(arr, mask=mask)
 
     def write(self, arr: np.ndarray, dst: str, **kwargs):

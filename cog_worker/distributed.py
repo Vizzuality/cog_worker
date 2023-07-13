@@ -175,4 +175,4 @@ class DaskManager(cog_worker.manager.Manager):
                 future.release()
                 yield result
         else:
-            yield from tasks
+            return tasks
