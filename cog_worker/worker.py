@@ -144,7 +144,7 @@ class Worker:
             arr = np.ma.array(arr, mask=_mask)
         return arr
 
-    def read(self, src: Union[str, Sequence[str]], masked=True, **kwargs) -> np.ndarray:
+    def read(self, src: Union[str, Sequence[str]], masked=True, **kwargs) -> np.ndarray | np.ma.MaskedArray:
         """Read a COG, reprojecting and clipping as necessary.
 
         The read method uses ``rio_tiler.COGReader`` to takes advantage of the
