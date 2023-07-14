@@ -11,6 +11,8 @@
   array masks are PER_BAND.
 - DaskManager.chunk_execute(compute=False) returns a List of Delayeds instead of
   a Generator.
+- Remove automatic retries on worker.read() when rasterio raises a
+  CPLE_AppDefinedError.
 
 ### Added
 

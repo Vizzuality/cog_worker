@@ -23,7 +23,6 @@ from typing import Sequence, Union
 from pyproj import Proj
 from pyproj.enums import TransformDirection
 import rasterio as rio
-from rasterio._err import CPLE_AppDefinedError
 import numpy as np
 from rio_tiler.errors import EmptyMosaicError
 from rio_tiler.models import ImageData
@@ -264,28 +263,15 @@ def _read_COG(
     crs: Union[str, int, Proj],
     width: int,
     height: int,
-    __retries: int = 6,
     **kwargs,
 ) -> ImageData:
     """Read part of a COG, warping and resampling to a target shape."""
-    exc = None
-    __retries = max(0, __retries)
-    while __retries >= 0:
-        with COGReader(asset, **kwargs) as cog:  # type: ignore
-            try:
-                return cog.part(
-                    proj_bounds,
-                    bounds_crs=crs,
-                    dst_crs=crs,
-                    max_size=None,
-                    width=width,
-                    height=height,
-                )
-            except CPLE_AppDefinedError as e:
-                # Ignore some strange GDAL errors when reading in some projections
-                # see: https://rasterio.groups.io/g/main/message/780
-                exc = e
-        __retries -= 1
-    if exc:
-        raise exc
-    raise Exception(f"Failed reading asset {asset}")
+    with COGReader(asset, **kwargs) as cog:  # type: ignore
+        return cog.part(
+            proj_bounds,
+            bounds_crs=crs,
+            dst_crs=crs,
+            max_size=None,
+            width=width,
+            height=height,
+        )
