@@ -38,6 +38,7 @@ from pyproj import Proj
 import rasterio as rio
 from rasterio.io import DatasetWriter
 import rasterio.windows
+import rasterio.transform
 
 import cog_worker.worker
 from .utils import _bbox_size, _get_profile
@@ -295,7 +296,15 @@ class Manager:
         if len(arr.shape) == 2:
             arr = arr[np.newaxis]
         height, width = arr.shape[1:]
-        window = rasterio.windows.from_bounds(*bbox, writer.transform, height, width)
+
+        left, bottom, right, top = bbox
+        rows, cols = rasterio.transform.rowcol(
+            writer.transform,
+            [left],
+            [top],
+            op=round,
+        )
+        window = rasterio.windows.Window(min(cols), min(rows), width, height)
 
         writer.write(arr, window=window)
         if isinstance(arr, np.ma.MaskedArray):

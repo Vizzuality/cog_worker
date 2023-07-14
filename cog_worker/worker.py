@@ -27,7 +27,7 @@ from rasterio._err import CPLE_AppDefinedError
 import numpy as np
 from rio_tiler.errors import EmptyMosaicError
 from rio_tiler.models import ImageData
-from rio_tiler.io.cogeo import COGReader
+from rio_tiler.io import COGReader
 from rio_tiler.mosaic.reader import mosaic_reader
 
 from cog_worker.types import BoundingBox
@@ -140,7 +140,7 @@ class Worker:
         arr = np.zeros((1, self.height + self.buffer * 2, self.width + self.buffer * 2))
         if mask:
             _mask = np.ones(
-                (self.height + self.buffer * 2, self.width + self.buffer * 2)
+                (1, self.height + self.buffer * 2, self.width + self.buffer * 2)
             )
             arr = np.ma.array(arr, mask=_mask)
         return arr
@@ -190,13 +190,11 @@ class Worker:
             except EmptyMosaicError:
                 return self.empty(mask=True)
 
-        arr = img.data
+        arr = img.array
 
         if not masked:
-            return arr
-
-        mask = (img.mask == 0) | np.isnan(arr)
-        return np.ma.array(arr, mask=mask)
+            return arr.data
+        return arr
 
     def write(self, arr: np.ndarray, dst: str, **kwargs):
         """Write a Numpy array to a GeoTIFF.

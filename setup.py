@@ -19,9 +19,9 @@ setup(
     install_requires=[
         "numpy>=1,<2",
         "pyproj>=3.0.0,<4",
-        "rasterio>=1.2,<2",
-        "morecantile>=3.0.0,<4",
-        "rio_tiler>=3.0.0,<4",
+        "rasterio>=1.3,<2",
+        "morecantile>=4.3.0,<5",
+        "rio_tiler>=5.0.0,<6",
     ],
     extras_require={
         "test": ["pytest"],
