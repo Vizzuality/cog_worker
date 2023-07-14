@@ -1,14 +1,16 @@
 <!doctype html>
-<html class="no-js">
+<html class="no-js" lang="en">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
-    <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Create a custom tile server" href="3.%20tile-server.html" /><link rel="prev" title="Quick start" href="1.%20quick-start.html" />
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Create a custom tile server" href="3.%20tile-server.html" /><link rel="prev" title="Quick start" href="1.%20quick-start.html" />
 
-    <meta name="generator" content="sphinx-4.1.2, furo 2021.08.11.beta42"/>
-        <title>Tutorial example - Cog Worker 0.1.4 documentation</title>
+    <!-- Generated with Sphinx 7.0.1 and Furo 2023.05.20 -->
+        <title>Tutorial example - Cog Worker 0.2.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=197f00461d56902ea7ca048ec6e6ba026f62c97b" />
-    <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?digest=93475b62d1c3bc01323a0eefdc14a62d77b12690" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=e6660623a769aa55fea372102b9bf3151b292993" />
+    <link rel="stylesheet" type="text/css" href="../_static/nbsphinx-code-cells.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
     
     
 
@@ -19,36 +21,38 @@
   --color-code-foreground: black;
   
   }
-  body[data-theme="dark"] {
-    --color-code-background: #202020;
-  --color-code-foreground: #d0d0d0;
-  
-  }
-  @media (prefers-color-scheme: dark) {
-    body:not([data-theme="light"]) {
+  @media not print {
+    body[data-theme="dark"] {
       --color-code-background: #202020;
   --color-code-foreground: #d0d0d0;
   
     }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
   }
-</style>
-    <link media="(prefers-color-scheme: dark)" rel="stylesheet" href="../_static/pygments_dark.css"></head>
+</style></head>
   <body>
     
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
 <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
   <symbol id="svg-toc" viewBox="0 0 24 24">
     <title>Contents</title>
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-      <path stroke="none" d="M0 0h24v24H0z" />
-      <line x1="4" y1="6" x2="20" y2="6" />
-      <line x1="10" y1="12" x2="20" y2="12" />
-      <line x1="6" y1="18" x2="20" y2="18" />
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
     </svg>
   </symbol>
   <symbol id="svg-menu" viewBox="0 0 24 24">
     <title>Menu</title>
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
       stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
       <line x1="3" y1="12" x2="21" y2="12"></line>
       <line x1="3" y1="6" x2="21" y2="6"></line>
@@ -57,14 +61,14 @@
   </symbol>
   <symbol id="svg-arrow-right" viewBox="0 0 24 24">
     <title>Expand</title>
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
       stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
       <polyline points="9 18 15 12 9 6"></polyline>
     </svg>
   </symbol>
   <symbol id="svg-sun" viewBox="0 0 24 24">
     <title>Light mode</title>
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
       stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
       <circle cx="12" cy="12" r="5"></circle>
       <line x1="12" y1="1" x2="12" y2="3"></line>
@@ -79,7 +83,7 @@
   </symbol>
   <symbol id="svg-moon" viewBox="0 0 24 24">
     <title>Dark mode</title>
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
       stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
       <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
@@ -87,7 +91,7 @@
   </symbol>
   <symbol id="svg-sun-half" viewBox="0 0 24 24">
     <title>Auto light/dark mode</title>
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
       stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
       <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
       <circle cx="12" cy="12" r="9" />
@@ -120,7 +124,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../index.html"><div class="brand">Cog Worker 0.1.4 documentation</div></a>
+      <a href="../index.html"><div class="brand">Cog Worker 0.2.0 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -143,10 +147,10 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
   
   
-  <span class="sidebar-brand-text">Cog Worker 0.1.4 documentation</span>
+  <span class="sidebar-brand-text">Cog Worker 0.2.0 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
-  <input class="sidebar-search" placeholder=Search name="q" aria-label="Search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
   <input type="hidden" name="check_keywords" value="yes">
   <input type="hidden" name="area" value="default">
 </form>
@@ -154,14 +158,14 @@
   <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../index.html">Introduction</a></li>
-<li class="toctree-l1 current has-children"><a class="reference internal" href="../examples.html">Examples</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l1 current has-children"><a class="reference internal" href="../examples.html">Examples</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of Examples</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="1.%20quick-start.html">Quick start</a></li>
 <li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Tutorial example</a></li>
 <li class="toctree-l2"><a class="reference internal" href="3.%20tile-server.html">Create a custom tile server</a></li>
 <li class="toctree-l2"><a class="reference internal" href="4.%20stac-ndvi.html">Compute Sentinel-2 NDVI with Stac and Dask</a></li>
 </ul>
 </li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../api_reference.html">API Reference</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../api_reference.html">API Reference</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of API Reference</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../cog_worker/1.%20worker.html">cog_worker.worker</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../cog_worker/2.%20manager.html">cog_worker.manager</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../cog_worker/3.%20distributed.html">cog_worker.distributed</a></li>
@@ -172,15 +176,23 @@
 
 </div>
 </div>
+
       </div>
       
     </div>
   </aside>
   <div class="main">
     <div class="content">
-      <article role="main">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
         <div class="content-icon-container">
-          <div class="theme-toggle-container theme-toggle-content">
+          
+<div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
               <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
@@ -193,304 +205,53 @@
             <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
           </label>
         </div>
-        
-<style>
-/* CSS for nbsphinx extension */
-
-/* remove conflicting styling from Sphinx themes */
-div.nbinput.container div.prompt *,
-div.nboutput.container div.prompt *,
-div.nbinput.container div.input_area pre,
-div.nboutput.container div.output_area pre,
-div.nbinput.container div.input_area .highlight,
-div.nboutput.container div.output_area .highlight {
-    border: none;
-    padding: 0;
-    margin: 0;
-    box-shadow: none;
-}
-
-div.nbinput.container > div[class*=highlight],
-div.nboutput.container > div[class*=highlight] {
-    margin: 0;
-}
-
-div.nbinput.container div.prompt *,
-div.nboutput.container div.prompt * {
-    background: none;
-}
-
-div.nboutput.container div.output_area .highlight,
-div.nboutput.container div.output_area pre {
-    background: unset;
-}
-
-div.nboutput.container div.output_area div.highlight {
-    color: unset;  /* override Pygments text color */
-}
-
-/* avoid gaps between output lines */
-div.nboutput.container div[class*=highlight] pre {
-    line-height: normal;
-}
-
-/* input/output containers */
-div.nbinput.container,
-div.nboutput.container {
-    display: -webkit-flex;
-    display: flex;
-    align-items: flex-start;
-    margin: 0;
-    width: 100%;
-}
-@media (max-width: 540px) {
-    div.nbinput.container,
-    div.nboutput.container {
-        flex-direction: column;
-    }
-}
-
-/* input container */
-div.nbinput.container {
-    padding-top: 5px;
-}
-
-/* last container */
-div.nblast.container {
-    padding-bottom: 5px;
-}
-
-/* input prompt */
-div.nbinput.container div.prompt pre {
-    color: #307FC1;
-}
-
-/* output prompt */
-div.nboutput.container div.prompt pre {
-    color: #BF5B3D;
-}
-
-/* all prompts */
-div.nbinput.container div.prompt,
-div.nboutput.container div.prompt {
-    width: 4.5ex;
-    padding-top: 5px;
-    position: relative;
-    user-select: none;
-}
-
-div.nbinput.container div.prompt > div,
-div.nboutput.container div.prompt > div {
-    position: absolute;
-    right: 0;
-    margin-right: 0.3ex;
-}
-
-@media (max-width: 540px) {
-    div.nbinput.container div.prompt,
-    div.nboutput.container div.prompt {
-        width: unset;
-        text-align: left;
-        padding: 0.4em;
-    }
-    div.nboutput.container div.prompt.empty {
-        padding: 0;
-    }
-
-    div.nbinput.container div.prompt > div,
-    div.nboutput.container div.prompt > div {
-        position: unset;
-    }
-}
-
-/* disable scrollbars on prompts */
-div.nbinput.container div.prompt pre,
-div.nboutput.container div.prompt pre {
-    overflow: hidden;
-}
-
-/* input/output area */
-div.nbinput.container div.input_area,
-div.nboutput.container div.output_area {
-    -webkit-flex: 1;
-    flex: 1;
-    overflow: auto;
-}
-@media (max-width: 540px) {
-    div.nbinput.container div.input_area,
-    div.nboutput.container div.output_area {
-        width: 100%;
-    }
-}
-
-/* input area */
-div.nbinput.container div.input_area {
-    border: 1px solid #e0e0e0;
-    border-radius: 2px;
-    /*background: #f5f5f5;*/
-}
-
-/* override MathJax center alignment in output cells */
-div.nboutput.container div[class*=MathJax] {
-    text-align: left !important;
-}
-
-/* override sphinx.ext.imgmath center alignment in output cells */
-div.nboutput.container div.math p {
-    text-align: left;
-}
-
-/* standard error */
-div.nboutput.container div.output_area.stderr {
-    background: #fdd;
-}
-
-/* ANSI colors */
-.ansi-black-fg { color: #3E424D; }
-.ansi-black-bg { background-color: #3E424D; }
-.ansi-black-intense-fg { color: #282C36; }
-.ansi-black-intense-bg { background-color: #282C36; }
-.ansi-red-fg { color: #E75C58; }
-.ansi-red-bg { background-color: #E75C58; }
-.ansi-red-intense-fg { color: #B22B31; }
-.ansi-red-intense-bg { background-color: #B22B31; }
-.ansi-green-fg { color: #00A250; }
-.ansi-green-bg { background-color: #00A250; }
-.ansi-green-intense-fg { color: #007427; }
-.ansi-green-intense-bg { background-color: #007427; }
-.ansi-yellow-fg { color: #DDB62B; }
-.ansi-yellow-bg { background-color: #DDB62B; }
-.ansi-yellow-intense-fg { color: #B27D12; }
-.ansi-yellow-intense-bg { background-color: #B27D12; }
-.ansi-blue-fg { color: #208FFB; }
-.ansi-blue-bg { background-color: #208FFB; }
-.ansi-blue-intense-fg { color: #0065CA; }
-.ansi-blue-intense-bg { background-color: #0065CA; }
-.ansi-magenta-fg { color: #D160C4; }
-.ansi-magenta-bg { background-color: #D160C4; }
-.ansi-magenta-intense-fg { color: #A03196; }
-.ansi-magenta-intense-bg { background-color: #A03196; }
-.ansi-cyan-fg { color: #60C6C8; }
-.ansi-cyan-bg { background-color: #60C6C8; }
-.ansi-cyan-intense-fg { color: #258F8F; }
-.ansi-cyan-intense-bg { background-color: #258F8F; }
-.ansi-white-fg { color: #C5C1B4; }
-.ansi-white-bg { background-color: #C5C1B4; }
-.ansi-white-intense-fg { color: #A1A6B2; }
-.ansi-white-intense-bg { background-color: #A1A6B2; }
-
-.ansi-default-inverse-fg { color: #FFFFFF; }
-.ansi-default-inverse-bg { background-color: #000000; }
-
-.ansi-bold { font-weight: bold; }
-.ansi-underline { text-decoration: underline; }
-
-
-div.nbinput.container div.input_area div[class*=highlight] > pre,
-div.nboutput.container div.output_area div[class*=highlight] > pre,
-div.nboutput.container div.output_area div[class*=highlight].math,
-div.nboutput.container div.output_area.rendered_html,
-div.nboutput.container div.output_area > div.output_javascript,
-div.nboutput.container div.output_area:not(.rendered_html) > img{
-    padding: 5px;
-    margin: 0;
-}
-
-/* fix copybtn overflow problem in chromium (needed for 'sphinx_copybutton') */
-div.nbinput.container div.input_area > div[class^='highlight'],
-div.nboutput.container div.output_area > div[class^='highlight']{
-    overflow-y: hidden;
-}
-
-/* hide copybtn icon on prompts (needed for 'sphinx_copybutton') */
-.prompt a.copybtn {
-    display: none;
-}
-
-/* Some additional styling taken form the Jupyter notebook CSS */
-div.rendered_html table {
-  border: none;
-  border-collapse: collapse;
-  border-spacing: 0;
-  color: black;
-  font-size: 12px;
-  table-layout: fixed;
-}
-div.rendered_html thead {
-  border-bottom: 1px solid black;
-  vertical-align: bottom;
-}
-div.rendered_html tr,
-div.rendered_html th,
-div.rendered_html td {
-  text-align: right;
-  vertical-align: middle;
-  padding: 0.5em 0.5em;
-  line-height: normal;
-  white-space: normal;
-  max-width: none;
-  border: none;
-}
-div.rendered_html th {
-  font-weight: bold;
-}
-div.rendered_html tbody tr:nth-child(odd) {
-  background: #f5f5f5;
-}
-div.rendered_html tbody tr:hover {
-  background: rgba(66, 165, 245, 0.2);
-}
-</style>
-<div class="section" id="Tutorial-example">
-<h1>Tutorial example<a class="headerlink" href="#Tutorial-example" title="Permalink to this headline">¶</a></h1>
+        <article role="main">
+          <section id="Tutorial-example">
+<h1>Tutorial example<a class="headerlink" href="#Tutorial-example" title="Permalink to this heading">#</a></h1>
 <p>For this example, we’ll calculate the distance to the nearest road using a global road raster derived from Open Street Map. Our goal will be to compute this at a 1km resolution in globally in the Molleweide equal-area projection, but we’ll approach the analysis in steps.</p>
 <p>There are a couple extra dependencies: - We’ll use <code class="docutils literal notranslate"><span class="pre">mahotas</span></code> to compute a fast distance transform. - We’ll also use <code class="docutils literal notranslate"><span class="pre">shapely</span></code> and <code class="docutils literal notranslate"><span class="pre">geopandas</span></code> to preview the geometries of the chunks.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="c1"># Install the mahotas library if necessary</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Install the mahotas library if necessary</span>
 <span class="c1">#!pip install --quiet mahotas shapely geopandas</span>
 
 <span class="kn">import</span> <span class="nn">mahotas</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">rasterio.plot</span> <span class="kn">import</span> <span class="n">show</span>
 <span class="kn">from</span> <span class="nn">cog_worker</span> <span class="kn">import</span> <span class="n">Manager</span>
-
-</pre></div>
+<br/></pre></div>
 </div>
 </div>
-<div class="section" id="Setup">
-<h2>Setup<a class="headerlink" href="#Setup" title="Permalink to this headline">¶</a></h2>
+<section id="Setup">
+<h2>Setup<a class="headerlink" href="#Setup" title="Permalink to this heading">#</a></h2>
 <p>First we’ll define our output bounds, scale, and projection using a <code class="docutils literal notranslate"><span class="pre">cog_worker.Manager</span></code>. You’ll use the manager to preview or execute the analysis.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">manager</span> <span class="o">=</span> <span class="n">Manager</span><span class="p">(</span>
-    <span class="n">proj</span> <span class="o">=</span> <span class="s2">"+proj=moll"</span><span class="p">,</span>  <span class="c1"># molleweide</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">manager</span> <span class="o">=</span> <span class="n">Manager</span><span class="p">(</span>
+    <span class="n">proj</span> <span class="o">=</span> <span class="s2">&quot;+proj=moll&quot;</span><span class="p">,</span>  <span class="c1"># molleweide</span>
     <span class="n">scale</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">,</span>  <span class="c1"># meters</span>
     <span class="n">bounds</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="mi">180</span><span class="p">,</span> <span class="o">-</span><span class="mi">90</span><span class="p">,</span> <span class="mi">180</span><span class="p">,</span> <span class="mi">90</span><span class="p">)</span>
 <span class="p">)</span>
 </pre></div>
 </div>
 </div>
-</div>
-<div class="section" id="Writing-a-Worker-function">
-<h2>Writing a Worker function<a class="headerlink" href="#Writing-a-Worker-function" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="Writing-a-Worker-function">
+<h2>Writing a Worker function<a class="headerlink" href="#Writing-a-Worker-function" title="Permalink to this heading">#</a></h2>
 <p>Next we’ll try reading the COG. We write a function that will recieve a <code class="docutils literal notranslate"><span class="pre">cog_worker.Worker</span></code> as its first parameter. The worker keeps track of the scope of the analysis and provides the <code class="docutils literal notranslate"><span class="pre">cog_worker.Worker.read()</span></code> function that will automatically reproject and rescale the source data to the output that scope you’re tarketing.</p>
 <p>We can preview this analysis at a reduced resolution by passing the function to the <code class="docutils literal notranslate"><span class="pre">cog_worker.Manager.preview()</span></code>. When executing an analysis the Manger will create a <code class="docutils literal notranslate"><span class="pre">cog_worker.Worker</span></code>, and pass it to your fuction.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="c1"># Let's check what the roads raster looks like</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Let&#39;s check what the roads raster looks like</span>
 <span class="k">def</span> <span class="nf">get_roads</span><span class="p">(</span><span class="n">worker</span><span class="p">):</span>
     <span class="c1"># use the worker to read the COG, reprojecting and resampling as necessary</span>
-    <span class="n">roads</span> <span class="o">=</span> <span class="n">worker</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s1">'roads_cog.tif'</span><span class="p">)</span>
+    <span class="n">roads</span> <span class="o">=</span> <span class="n">worker</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s1">&#39;roads_cog.tif&#39;</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">roads</span>
 
 <span class="c1"># Preview the analysis at a reduced scale</span>
@@ -503,28 +264,27 @@ div.rendered_html tbody tr:hover {
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_2._tutorial_5_0.png" src="../_images/examples_2._tutorial_5_0.png"/>
+<img alt="../_images/examples_2._tutorial_5_0.png" src="../_images/examples_2._tutorial_5_0.png" />
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-&lt;AxesSubplot:&gt;
+&lt;Axes: &gt;
 </pre></div></div>
 </div>
 <p>Let’s add some analysis. <code class="docutils literal notranslate"><span class="pre">worker.read</span></code> returns a Numpy masked array so we can use many different libraries to operate on it.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="c1"># Run a fast squared euclidian distance transform on the roads raster</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Run a fast squared euclidian distance transform on the roads raster</span>
 
 <span class="k">def</span> <span class="nf">get_roads_dist</span><span class="p">(</span><span class="n">worker</span><span class="p">):</span>
-    <span class="n">roads</span> <span class="o">=</span> <span class="n">worker</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s1">'roads_cog.tif'</span><span class="p">)</span>
+    <span class="n">roads</span> <span class="o">=</span> <span class="n">worker</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s1">&#39;roads_cog.tif&#39;</span><span class="p">)</span>
 
     <span class="c1"># compute squared distance from zeroed pixels</span>
     <span class="n">dist_2</span> <span class="o">=</span> <span class="n">mahotas</span><span class="o">.</span><span class="n">distance</span><span class="p">(</span><span class="n">roads</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">)</span>
@@ -536,36 +296,34 @@ div.rendered_html tbody tr:hover {
 
 <span class="n">arr</span><span class="p">,</span> <span class="n">bbox</span> <span class="o">=</span> <span class="n">manager</span><span class="o">.</span><span class="n">preview</span><span class="p">(</span><span class="n">get_roads_dist</span><span class="p">)</span>
 <span class="n">show</span><span class="p">(</span><span class="n">arr</span><span class="p">)</span>
-
-</pre></div>
+<br/></pre></div>
 </div>
 </div>
 <div class="nboutput docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_2._tutorial_7_0.png" src="../_images/examples_2._tutorial_7_0.png"/>
+<img alt="../_images/examples_2._tutorial_7_0.png" src="../_images/examples_2._tutorial_7_0.png" />
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-&lt;AxesSubplot:&gt;
+&lt;Axes: &gt;
 </pre></div></div>
 </div>
 <p>Next since we want to compute actual distance, we should multiple the result of the distance function, which measures pixels, by the current scale of the analysis.</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="c1"># Change from computing distance in pixels to meters,</span>
-<span class="c1"># as the scale of pixels depends on if we're just previwing the image or running the full analysis.</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Change from computing distance in pixels to meters,</span>
+<span class="c1"># as the scale of pixels depends on if we&#39;re just previwing the image or running the full analysis.</span>
 <span class="k">def</span> <span class="nf">get_roads_dist_meters</span><span class="p">(</span><span class="n">worker</span><span class="p">):</span>
-    <span class="n">roads</span> <span class="o">=</span> <span class="n">worker</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s1">'roads_cog.tif'</span><span class="p">)</span>
+    <span class="n">roads</span> <span class="o">=</span> <span class="n">worker</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s1">&#39;roads_cog.tif&#39;</span><span class="p">)</span>
     <span class="n">dist_2</span> <span class="o">=</span> <span class="n">mahotas</span><span class="o">.</span><span class="n">distance</span><span class="p">(</span><span class="n">roads</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">)</span>
     <span class="n">dist</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">dist_2</span><span class="p">)</span>
 
@@ -582,16 +340,31 @@ div.rendered_html tbody tr:hover {
 </pre></div>
 </div>
 </div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
 </div>
-<div class="section" id="Previewing-analysis">
-<h2>Previewing analysis<a class="headerlink" href="#Previewing-analysis" title="Permalink to this headline">¶</a></h2>
-<p>You can try zooming in or modifying the parameters in other ways. The <code class="docutils literal notranslate"><span class="pre">preview</span></code> function will change the scale to fit within 1024x1024px.</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="output_area docutils container">
+<img alt="../_images/examples_2._tutorial_9_0.png" src="../_images/examples_2._tutorial_9_0.png" />
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="c1"># e.g. Italy</span>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&lt;Axes: &gt;
+</pre></div></div>
+</div>
+</section>
+<section id="Previewing-analysis">
+<h2>Previewing analysis<a class="headerlink" href="#Previewing-analysis" title="Permalink to this heading">#</a></h2>
+<p>You can try zooming in or modifying the parameters in other ways. The <code class="docutils literal notranslate"><span class="pre">preview</span></code> function will change the scale to fit within 1024x1024px.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># e.g. Italy</span>
 <span class="n">arr</span><span class="p">,</span> <span class="n">bbox</span> <span class="o">=</span> <span class="n">manager</span><span class="o">.</span><span class="n">preview</span><span class="p">(</span><span class="n">get_roads_dist_meters</span><span class="p">,</span> <span class="n">bounds</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">35</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">45</span><span class="p">))</span>
 <span class="n">show</span><span class="p">(</span><span class="n">arr</span><span class="p">)</span>
 
@@ -605,42 +378,42 @@ div.rendered_html tbody tr:hover {
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_2._tutorial_11_0.png" src="../_images/examples_2._tutorial_11_0.png"/>
+<img alt="../_images/examples_2._tutorial_11_0.png" src="../_images/examples_2._tutorial_11_0.png" />
 </div>
 </div>
 <div class="nboutput docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_2._tutorial_11_1.png" src="../_images/examples_2._tutorial_11_1.png"/>
+<img alt="../_images/examples_2._tutorial_11_1.png" src="../_images/examples_2._tutorial_11_1.png" />
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-&lt;AxesSubplot:&gt;
+&lt;Axes: &gt;
 </pre></div></div>
 </div>
-</div>
-<div class="section" id="Executing-analysis-in-chunks">
-<h2>Executing analysis in chunks<a class="headerlink" href="#Executing-analysis-in-chunks" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="Executing-analysis-in-chunks">
+<h2>Executing analysis in chunks<a class="headerlink" href="#Executing-analysis-in-chunks" title="Permalink to this heading">#</a></h2>
 <p>If we’re satisfied with our analysis, the next step is to set up the full run.</p>
 <p>We’ll use the <code class="docutils literal notranslate"><span class="pre">cog_worker.Manager</span></code> to chunk our analysis into chunks of 4096x4096 px.</p>
 <p>When dividing the analysis into chunks, we need to account for roads that might be outside the tile. We can do this by setting the <code class="docutils literal notranslate"><span class="pre">buffer</span></code> relative to the scale of our analysis, and the maximum distance that we care about. The worker will read <code class="docutils literal notranslate"><span class="pre">buffer</span></code> extra pixels outside of its bounds, make them available for computation, and then discard them before saving the results.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">max_dist</span> <span class="o">=</span> <span class="mi">10000</span>  <span class="c1"># meters</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">max_dist</span> <span class="o">=</span> <span class="mi">10000</span>  <span class="c1"># meters</span>
 <span class="n">scale</span> <span class="o">=</span> <span class="mi">1000</span>  <span class="c1"># meters</span>
 <span class="n">buffer</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">max_dist</span> <span class="o">/</span> <span class="n">scale</span><span class="p">)</span>  <span class="c1"># pixels</span>
 
 <span class="n">manager</span> <span class="o">=</span> <span class="n">Manager</span><span class="p">(</span>
     <span class="n">bounds</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="mi">180</span><span class="p">,</span> <span class="o">-</span><span class="mi">90</span><span class="p">,</span> <span class="mi">180</span><span class="p">,</span> <span class="mi">90</span><span class="p">),</span>
-    <span class="n">proj</span> <span class="o">=</span> <span class="s2">"+proj=moll"</span><span class="p">,</span>
+    <span class="n">proj</span> <span class="o">=</span> <span class="s2">&quot;+proj=moll&quot;</span><span class="p">,</span>
     <span class="n">scale</span> <span class="o">=</span> <span class="n">scale</span><span class="p">,</span>
     <span class="n">buffer</span> <span class="o">=</span> <span class="n">buffer</span>
 <span class="p">)</span>
@@ -648,11 +421,10 @@ div.rendered_html tbody tr:hover {
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="c1"># we can preview how the manager will divide the world</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># we can preview how the manager will divide the world</span>
 <span class="kn">import</span> <span class="nn">geopandas</span>
 <span class="kn">from</span> <span class="nn">shapely</span> <span class="kn">import</span> <span class="n">geometry</span>
 
@@ -662,65 +434,57 @@ div.rendered_html tbody tr:hover {
 <span class="p">]</span>
 
 <span class="c1"># Chunks in projected coordinates</span>
-<span class="n">geopandas</span><span class="o">.</span><span class="n">GeoDataFrame</span><span class="p">(</span><span class="n">geometry</span><span class="o">=</span><span class="n">bboxes</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">'000'</span><span class="p">)</span>
+<span class="n">geopandas</span><span class="o">.</span><span class="n">GeoDataFrame</span><span class="p">(</span><span class="n">geometry</span><span class="o">=</span><span class="n">bboxes</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;000&#39;</span><span class="p">)</span>
 
 <span class="n">bboxes_lnglat</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="n">geometry</span><span class="o">.</span><span class="n">box</span><span class="p">(</span><span class="o">*</span><span class="n">manager</span><span class="o">.</span><span class="n">proj</span><span class="o">.</span><span class="n">transform_bounds</span><span class="p">(</span><span class="o">*</span><span class="n">bbox</span><span class="p">,</span> <span class="n">direction</span><span class="o">=</span><span class="s1">'inverse'</span><span class="p">))</span>
+    <span class="n">geometry</span><span class="o">.</span><span class="n">box</span><span class="p">(</span><span class="o">*</span><span class="n">manager</span><span class="o">.</span><span class="n">proj</span><span class="o">.</span><span class="n">transform_bounds</span><span class="p">(</span><span class="o">*</span><span class="n">bbox</span><span class="p">,</span> <span class="n">direction</span><span class="o">=</span><span class="s1">&#39;inverse&#39;</span><span class="p">))</span>
     <span class="k">for</span> <span class="n">bbox</span> <span class="ow">in</span> <span class="n">manager</span><span class="o">.</span><span class="n">chunks</span><span class="p">(</span><span class="n">chunksize</span><span class="o">=</span><span class="mi">4096</span><span class="p">)</span>
 <span class="p">]</span>
 
 <span class="c1"># Chunks in lat-lng coordinates</span>
-<span class="n">geopandas</span><span class="o">.</span><span class="n">GeoDataFrame</span><span class="p">(</span><span class="n">geometry</span><span class="o">=</span><span class="n">bboxes_lnglat</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">'000'</span><span class="p">)</span>
+<span class="n">geopandas</span><span class="o">.</span><span class="n">GeoDataFrame</span><span class="p">(</span><span class="n">geometry</span><span class="o">=</span><span class="n">bboxes_lnglat</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;000&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="nboutput docutils container">
-<div class="prompt empty docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
 </div>
-<div class="output_area stderr docutils container">
+<div class="output_area docutils container">
 <div class="highlight"><pre>
-/usr/local/homebrew/lib/python3.9/site-packages/geopandas/_compat.py:106: UserWarning: The Shapely GEOS version (3.8.0-CAPI-1.13.1 ) is incompatible with the GEOS version PyGEOS was compiled with (3.9.1-CAPI-1.14.2). Conversions between both will be slow.
-  warnings.warn(
+&lt;Axes: &gt;
 </pre></div></div>
 </div>
 <div class="nboutput docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<div class="highlight"><pre>
-&lt;AxesSubplot:&gt;
-</pre></div></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<img alt="../_images/examples_2._tutorial_14_2.png" src="../_images/examples_2._tutorial_14_2.png"/>
+<img alt="../_images/examples_2._tutorial_14_1.png" src="../_images/examples_2._tutorial_14_1.png" />
 </div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_2._tutorial_14_3.png" src="../_images/examples_2._tutorial_14_3.png"/>
+<img alt="../_images/examples_2._tutorial_14_2.png" src="../_images/examples_2._tutorial_14_2.png" />
 </div>
 </div>
 <p>Finally, execute the full analysis in 4096x4096 chunks saving the results to output.tif</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="c1"># this might take a while...</span>
-<span class="c1">#manager.chunk_save('output.tif', get_roads_dist_meters, chunksize=4096)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># this might take a while...</span>
+<span class="c1">#manager.chunk_save(&#39;output.tif&#39;, get_roads_dist_meters, chunksize=4096)</span>
 </pre></div>
 </div>
 </div>
 <p>This will compute each chunk one after the other. Numpy natively parallelizes array operations, if you need to scale up to run your analysis in a larger cluster, see: <a class="reference internal" href="../cog_worker/3.%20distributed.html"><span class="doc">cog_worker.distributed</span></a>.</p>
-</div>
-</div>
+</section>
+</section>
 
-      </article>
+        </article>
+      </div>
       <footer>
         
         <div class="related-pages">
@@ -731,10 +495,10 @@ div.rendered_html tbody tr:hover {
                 </div>
                 <div class="title">Create a custom tile server</div>
               </div>
-              <svg><use href="#svg-arrow-right"></use></svg>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
           <a class="prev-page" href="1.%20quick-start.html">
-              <svg><use href="#svg-arrow-right"></use></svg>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
@@ -745,19 +509,19 @@ div.rendered_html tbody tr:hover {
               </div>
             </a>
         </div>
-
-        <div class="related-information">
-              Copyright &#169; 2021, Simbiotica S.L.
-            |
-            Built with <a href="https://www.sphinx-doc.org/">Sphinx</a>
-              and
-              <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
-              <a href="https://github.com/pradyunsg/furo">Furo theme</a>.
-            |
-            <a class="muted-link" href="../_sources/examples/2. tutorial.ipynb.txt"
-               rel="nofollow">
-              Show Source
-            </a>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2021, Simbiotica S.L.
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
         </div>
         
       </footer>
@@ -768,7 +532,7 @@ div.rendered_html tbody tr:hover {
       <div class="toc-sticky toc-scroll">
         <div class="toc-title-container">
           <span class="toc-title">
-            Contents
+            On this page
           </span>
         </div>
         <div class="toc-tree-container">
@@ -791,12 +555,11 @@ div.rendered_html tbody tr:hover {
     </aside>
   </div>
 </div><script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-    <script src="../_static/jquery.js"></script>
-    <script src="../_static/underscore.js"></script>
     <script src="../_static/doctools.js"></script>
-    <script src="../_static/scripts/main.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/scripts/furo.js"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     </body>
 </html>

@@ -172,7 +172,7 @@ class DaskManager(cog_worker.manager.Manager):
             for future, result in dask.distributed.as_completed(
                 futures, with_results=True
             ):
+                future.release()
                 yield result
         else:
-            for t in tasks:
-                yield t  # type: ignore
+            return tasks

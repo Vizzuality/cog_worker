@@ -12,6 +12,7 @@ sphinx_docs/build/*
 
 prototyping
 output.tif
+output.tif.msk
 
 .vscode
 

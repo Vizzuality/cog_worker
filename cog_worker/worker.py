@@ -23,11 +23,10 @@ from typing import Sequence, Union
 from pyproj import Proj
 from pyproj.enums import TransformDirection
 import rasterio as rio
-from rasterio._err import CPLE_AppDefinedError
 import numpy as np
 from rio_tiler.errors import EmptyMosaicError
 from rio_tiler.models import ImageData
-from rio_tiler.io.cogeo import COGReader
+from rio_tiler.io import COGReader
 from rio_tiler.mosaic.reader import mosaic_reader
 
 from cog_worker.types import BoundingBox
@@ -124,6 +123,7 @@ class Worker:
             buffered (bool): Buffer the Worker's bounding box.
         """
         pts = max(self.width, self.height) + (buffered * self.buffer * 2) - 1
+        pts = min(pts, 10000)
         bounds = self.xy_bounds(buffered)
         return self.proj.transform_bounds(
             *bounds, pts, direction=TransformDirection.INVERSE
@@ -139,12 +139,14 @@ class Worker:
         arr = np.zeros((1, self.height + self.buffer * 2, self.width + self.buffer * 2))
         if mask:
             _mask = np.ones(
-                (self.height + self.buffer * 2, self.width + self.buffer * 2)
+                (1, self.height + self.buffer * 2, self.width + self.buffer * 2)
             )
             arr = np.ma.array(arr, mask=_mask)
         return arr
 
-    def read(self, src: Union[str, Sequence[str]], **kwargs) -> np.ma.MaskedArray:
+    def read(
+        self, src: Union[str, Sequence[str]], masked=True, **kwargs
+    ) -> Union[np.ndarray, np.ma.MaskedArray]:
         """Read a COG, reprojecting and clipping as necessary.
 
         The read method uses ``rio_tiler.COGReader`` to takes advantage of the
@@ -164,6 +166,7 @@ class Worker:
 
         Args:
             src (str, list): The data source to read or list of sources to mosiac.
+            masked (bool): Return a Numpy masked array, otherwise ignore dataset mask.
             **kwargs: Additional keyword arguments to pass to ``rio_tiler.COGReader.part``
                 or ``rio_tiler.mosaic_reader``. See: https://cogeotiff.github.io/rio-tiler/.
 
@@ -188,10 +191,11 @@ class Worker:
             except EmptyMosaicError:
                 return self.empty(mask=True)
 
-        arr = img.data
-        mask = (img.mask == 0) | np.isnan(arr)
+        arr = img.array
 
-        return np.ma.array(arr, mask=mask)
+        if not masked:
+            return arr.data
+        return arr
 
     def write(self, arr: np.ndarray, dst: str, **kwargs):
         """Write a Numpy array to a GeoTIFF.
@@ -264,23 +268,12 @@ def _read_COG(
     **kwargs,
 ) -> ImageData:
     """Read part of a COG, warping and resampling to a target shape."""
-    tries = 6
-    while tries > 0:
-        try:
-            with COGReader(asset, **kwargs) as cog:  # type: ignore
-                return cog.part(
-                    proj_bounds,
-                    bounds_crs=crs,
-                    dst_crs=crs,
-                    max_size=None,
-                    width=width,
-                    height=height,
-                )
-        except CPLE_AppDefinedError as e:
-            # Ignore some strange GDAL errors when reading in some projections
-            # see: https://rasterio.groups.io/g/main/message/780
-            logger.debug(e)
-            if tries <= 1:
-                raise e
-        tries -= 1
-    raise Exception(f"Failed reading asset {asset}")
+    with COGReader(asset, **kwargs) as cog:  # type: ignore
+        return cog.part(
+            proj_bounds,
+            bounds_crs=crs,
+            dst_crs=crs,
+            max_size=None,
+            width=width,
+            height=height,
+        )

@@ -6,7 +6,7 @@ with open("README.md") as f:
 
 setup(
     name="cog_worker",
-    version="0.1.4",
+    version="0.2.0",
     description="Scalable geospatial analysis on Cloud Optimized GeoTIFFs.",
     long_description=desc,
     long_description_content_type="text/markdown",
@@ -19,9 +19,9 @@ setup(
     install_requires=[
         "numpy>=1,<2",
         "pyproj>=3.0.0,<4",
-        "rasterio>=1.2,<2",
-        "morecantile>=3.0.0,<4",
-        "rio_tiler>=3.0.0,<4",
+        "rasterio>=1.3,<2",
+        "morecantile>=4.3.0,<5",
+        "rio_tiler>=5.0.0,<6",
     ],
     extras_require={
         "test": ["pytest"],

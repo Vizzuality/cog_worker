@@ -12,7 +12,8 @@ TEST_COG = "tests/roads_cog.tif"
 
 @pytest.fixture
 def cluster():
-    return LocalCluster()
+    with LocalCluster(n_workers=1) as cluster:
+        yield cluster
 
 
 @pytest.fixture

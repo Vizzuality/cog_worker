@@ -22,7 +22,7 @@ def test_xy_bounds(mercator_worker):
         19971868.88040857,
     )
     for a, b in zip(bbox, _bbox):
-        assert pytest.approx(a, b)
+        assert a == pytest.approx(b)
 
     bbox = mercator_worker.xy_bounds(True)
     _bbox = (
@@ -32,7 +32,7 @@ def test_xy_bounds(mercator_worker):
         20771868.88040857,
     )
     for a, b in zip(bbox, _bbox):
-        assert pytest.approx(a, b)
+        assert a == pytest.approx(b)
 
 
 def test_latlng_bounds(mercator_worker):
@@ -93,4 +93,4 @@ def test__buffer_bbox(mercator_worker):
         20771868.88040857,
     )
     for a, b in zip(bbox, _bbox):
-        assert pytest.approx(a, b)
+        assert a == pytest.approx(b)
