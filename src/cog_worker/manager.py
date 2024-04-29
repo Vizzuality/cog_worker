@@ -27,22 +27,23 @@ Example:
         manager.chuck_save('output.tif', myanalysis):
 
 """
-import math
+
 import logging
-from typing import IO, Iterable, Iterator, Mapping, Optional, Tuple, Type, Union, Any
+import math
+from typing import IO, Any, Iterable, Iterator, Mapping, Optional, Tuple, Type, Union
 
-
-import numpy as np
 import morecantile
-from pyproj import Proj
+import numpy as np
 import rasterio as rio
-from rasterio.io import DatasetWriter
-import rasterio.windows
 import rasterio.transform
+import rasterio.windows
+from pyproj import Proj
+from rasterio.io import DatasetWriter
 
 import cog_worker.worker
+
+from .types import BoundingBox, WorkerFunction
 from .utils import _bbox_size, _get_profile
-from .types import WorkerFunction, BoundingBox
 
 logger = logging.getLogger(__name__)
 
@@ -76,17 +77,15 @@ class Manager:
         self.scale = scale
         self.buffer = buffer
         self._proj_bounds = self.proj.transform_bounds(*bounds)
-        self.tms = morecantile.TileMatrixSet.custom(
-            list(self._proj_bounds), self.proj.crs
-        )
+        self.tms = morecantile.TileMatrixSet.custom(list(self._proj_bounds), self.proj.crs)
 
     def execute(
         self,
         f: WorkerFunction,
-        f_args: Iterable = None,
-        f_kwargs: Mapping = None,
+        f_args: Iterable | None = None,
+        f_kwargs: Mapping | None = None,
         clip: bool = True,
-        **kwargs
+        **kwargs,
     ) -> Tuple[Any, BoundingBox]:
         """Execute a function that takes a cog_worker.worker.Worker as its first parameter.
 
@@ -123,11 +122,11 @@ class Manager:
     def preview(
         self,
         f: WorkerFunction,
-        f_args: Iterable = None,
-        f_kwargs: Mapping = None,
-        bounds: Optional[BoundingBox] = None,
+        f_args: Iterable | None = None,
+        f_kwargs: Mapping | None = None,
+        bounds: Optional[BoundingBox] | None = None,
         max_size: int = 1024,
-        **kwargs
+        **kwargs,
     ) -> Tuple[Any, BoundingBox]:
         """Preview a function by executing it at a reduced scale.
 
@@ -163,13 +162,13 @@ class Manager:
     def tile(
         self,
         f: WorkerFunction,
-        f_args: Iterable = None,
-        f_kwargs: Mapping = None,
+        f_args: Iterable | None = None,
+        f_kwargs: Mapping | None = None,
         z: int = 0,
         x: int = 0,
         y: int = 0,
         tilesize: int = 256,
-        **kwargs
+        **kwargs,
     ) -> Tuple[Any, BoundingBox]:
         """Execute a function for the scale and bounds of a TMS tile.
 
@@ -209,8 +208,8 @@ class Manager:
     def chunk_execute(
         self,
         f: WorkerFunction,
-        f_args: Iterable = None,
-        f_kwargs: Mapping = None,
+        f_args: Iterable | None = None,
+        f_kwargs: Mapping | None = None,
         chunksize: int = 512,
     ) -> Iterator[Tuple[Any, BoundingBox]]:
         """Return a generator that executes a function on chunks of at most `chunksize` pixels.
@@ -241,10 +240,10 @@ class Manager:
         self,
         dst: Union[str, IO],
         f: WorkerFunction,
-        f_args: Iterable = None,
-        f_kwargs: Mapping = None,
+        f_args: Iterable | None = None,
+        f_kwargs: Mapping | None = None,
         chunksize: int = 512,
-        **kwargs
+        **kwargs,
     ):
         """Execute a function in chunks and write each chunk to disk as it is completed.
 
@@ -276,13 +275,9 @@ class Manager:
             for arr, bbox in chunks:
                 self._write_chunk(_writer, arr, bbox)
 
-    def _open_writer(
-        self, dst: Union[str, IO], count: int, dtype: Type, **kwargs
-    ) -> DatasetWriter:
+    def _open_writer(self, dst: Union[str, IO], count: int, dtype: Type, **kwargs) -> DatasetWriter:
         """Open a rasterio.DatasetWriter with default profile."""
-        profile = _get_profile(
-            count, self.scale, self._proj_bounds, self.proj, dtype, **kwargs
-        )
+        profile = _get_profile(count, self.scale, self._proj_bounds, self.proj, dtype, **kwargs)
 
         return rio.open(dst, "w", **profile)  # type: ignore
 
@@ -375,7 +370,7 @@ class Manager:
         left, bottom, right, top = self._proj_bounds
         _chunksize = chunksize * self.scale
 
-        l = left + x * _chunksize
+        l = left + x * _chunksize  # noqa: E741
         r = min(l + _chunksize, right)
         t = top - y * _chunksize
         b = max(t - _chunksize, bottom)
@@ -395,11 +390,7 @@ class Manager:
 
 
 def _execute(
-    f: WorkerFunction,
-    f_args: Iterable = None,
-    f_kwargs: Mapping = None,
-    clip: bool = True,
-    **kwargs
+    f: WorkerFunction, f_args: Iterable | None = None, f_kwargs: Mapping | None = None, clip: bool = True, **kwargs
 ) -> Tuple[Any, BoundingBox]:
     """Execute a function that takes a cog_worker.worker.Worker as its first parameter.
 

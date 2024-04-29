@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools >= 61.0"]
+requires = ["setuptools"]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -11,8 +11,6 @@ license = { file = "LICENSE.txt" }
 authors = [
     { name = "Francis Gassert", email = "francis.gassert@vizzuality.com" },
 ]
-url = "https://github.com/vizzuality/cog_worker"
-packages = ["cog_worker"]
 keywords = ["cog", "geotiff", "raster", "gdal", "rasterio", "dask"]
 classifiers = [
     "Intended Audience :: Information Technology",
@@ -26,7 +24,7 @@ classifiers = [
     "Programming Language :: Python :: 3.12",
     "Topic :: Scientific/Engineering :: GIS",
 ]
-version = "0.2.0"
+dynamic = ["version"]
 dependencies = [
     "numpy>=1,<2",
     "pyproj>=3.0.0,<4",
@@ -34,6 +32,10 @@ dependencies = [
     "morecantile>=4.3.0,<5",
     "rio_tiler>=5.0.0,<6",
 ]
+
+[project.urls]
+Homepage = "https://github.com/vizzuality/cog_worker"
+Issues = "https://github.com/vizzuality/cog_worker/issues"
 
 [project.optional-dependencies]
 test = ["pytest"]

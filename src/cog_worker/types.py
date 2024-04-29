@@ -1,4 +1,5 @@
 """cog_worker type definitions."""
+
 from typing import Callable, Tuple, Union
 
 import numpy as np
