@@ -1,0 +1,66 @@
+[build-system]
+requires = ["setuptools >= 61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "cog_worker"
+description = "Scalable geospatial analysis on Cloud Optimized GeoTIFFs."
+readme = "README.md"
+requires-python = ">=3.9"
+license = { file = "LICENSE.txt" }
+authors = [
+    { name = "Francis Gassert", email = "francis.gassert@vizzuality.com" },
+]
+url = "https://github.com/vizzuality/cog_worker"
+packages = ["cog_worker"]
+keywords = ["cog", "geotiff", "raster", "gdal", "rasterio", "dask"]
+classifiers = [
+    "Intended Audience :: Information Technology",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: GIS",
+]
+version = "0.2.0"
+dependencies = [
+    "numpy>=1,<2",
+    "pyproj>=3.0.0,<4",
+    "rasterio>=1.3,<2",
+    "morecantile>=4.3.0,<5",
+    "rio_tiler>=5.0.0,<6",
+]
+
+[project.optional-dependencies]
+test = ["pytest"]
+dev = ["pre-commit"]
+distributed = ["dask[distributed]"]
+docs = ["Sphinx", "sphinxcontrib-napoleon", "furo", "nbsphinx", "nbconvert"]
+
+[tool.ruff]
+line-length = 120
+extend-include = ["*.ipynb"]
+
+[tool.ruff.lint]
+select = [
+    "D1", # pydocstyle errors
+    "E",  # pycodestyle errors
+    "W",  # pycodestyle warnings
+    "F",  # flake8
+    "C",  # flake8-comprehensions
+    "B",  # flake8-bugbear
+    "N",  # Naming conventions
+    "I",  # isort
+]
+pydocstyle.convention = "google"
+pydocstyle.ignore-decorators = ["property"]
+
+[tool.ruff.lint.per-file-ignores]
+"**/{tests}/*" = [
+    "D103", # Missing docstring in public function
+    "D100", # Missing docstring in public module
+]
