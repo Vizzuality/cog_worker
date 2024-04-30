@@ -82,8 +82,8 @@ class Manager:
     def execute(
         self,
         f: WorkerFunction,
-        f_args: Iterable | None = None,
-        f_kwargs: Mapping | None = None,
+        f_args: Union[Iterable, None] = None,
+        f_kwargs: Union[Mapping, None] = None,
         clip: bool = True,
         **kwargs,
     ) -> Tuple[Any, BoundingBox]:
@@ -122,8 +122,8 @@ class Manager:
     def preview(
         self,
         f: WorkerFunction,
-        f_args: Iterable | None = None,
-        f_kwargs: Mapping | None = None,
+        f_args: Union[Iterable, None] = None,
+        f_kwargs: Union[Mapping, None] = None,
         bounds: Optional[BoundingBox] | None = None,
         max_size: int = 1024,
         **kwargs,
@@ -162,8 +162,8 @@ class Manager:
     def tile(
         self,
         f: WorkerFunction,
-        f_args: Iterable | None = None,
-        f_kwargs: Mapping | None = None,
+        f_args: Union[Iterable, None] = None,
+        f_kwargs: Union[Mapping, None] = None,
         z: int = 0,
         x: int = 0,
         y: int = 0,
@@ -208,8 +208,8 @@ class Manager:
     def chunk_execute(
         self,
         f: WorkerFunction,
-        f_args: Iterable | None = None,
-        f_kwargs: Mapping | None = None,
+        f_args: Union[Iterable, None] = None,
+        f_kwargs: Union[Mapping, None] = None,
         chunksize: int = 512,
     ) -> Iterator[Tuple[Any, BoundingBox]]:
         """Return a generator that executes a function on chunks of at most `chunksize` pixels.
@@ -240,8 +240,8 @@ class Manager:
         self,
         dst: Union[str, IO],
         f: WorkerFunction,
-        f_args: Iterable | None = None,
-        f_kwargs: Mapping | None = None,
+        f_args: Union[Iterable, None] = None,
+        f_kwargs: Union[Mapping, None] = None,
         chunksize: int = 512,
         **kwargs,
     ):
@@ -390,7 +390,11 @@ class Manager:
 
 
 def _execute(
-    f: WorkerFunction, f_args: Iterable | None = None, f_kwargs: Mapping | None = None, clip: bool = True, **kwargs
+    f: WorkerFunction,
+    f_args: Union[Iterable, None] = None,
+    f_kwargs: Union[Mapping, None] = None,
+    clip: bool = True,
+    **kwargs,
 ) -> Tuple[Any, BoundingBox]:
     """Execute a function that takes a cog_worker.worker.Worker as its first parameter.
 

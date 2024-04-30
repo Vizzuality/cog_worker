@@ -42,7 +42,7 @@ class Worker:
     def __init__(
         self,
         bounds: BoundingBox = (-180, -85, 180, 85),
-        proj_bounds: BoundingBox | None = None,
+        proj_bounds: Union[BoundingBox, None] = None,
         proj: Union[int, str, Proj] = 3857,
         scale: float = 10000,
         buffer: int = 16,
