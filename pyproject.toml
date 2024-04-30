@@ -46,6 +46,7 @@ docs = ["Sphinx", "sphinxcontrib-napoleon", "furo", "nbsphinx", "nbconvert"]
 [tool.ruff]
 line-length = 120
 extend-include = ["*.ipynb"]
+src = ["src"]
 
 [tool.ruff.lint]
 select = [

@@ -1,9 +1,10 @@
 import pytest
 import rasterio as rio
-from cog_worker import Manager
-from cog_worker.distributed import DaskManager
 from dask.distributed import Client, LocalCluster
 from rasterio import MemoryFile
+
+from cog_worker import Manager
+from cog_worker.distributed import DaskManager
 
 TEST_COG = "tests/roads_cog.tif"
 
