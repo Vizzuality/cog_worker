@@ -1,20 +1,16 @@
 """Utility functions."""
+
 from typing import Tuple, Type, Union
 
-from rasterio import transform
-from pyproj import Proj
 import numpy as np
+from pyproj import Proj
+from rasterio import transform
 
 from .types import BoundingBox
 
 
 def _get_profile(
-    count: int,
-    scale: float,
-    proj_bounds: BoundingBox,
-    proj: Proj,
-    dtype: Union[Type, np.dtype],
-    **kwargs
+    count: int, scale: float, proj_bounds: BoundingBox, proj: Proj, dtype: Union[Type, np.dtype], **kwargs
 ) -> dict:
     width, height = _bbox_size(proj_bounds, scale)
     affine = transform.from_origin(proj_bounds[0], proj_bounds[3], scale, scale)

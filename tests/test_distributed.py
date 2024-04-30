@@ -1,11 +1,10 @@
 import pytest
-from dask.distributed import Client, LocalCluster
 import rasterio as rio
+from dask.distributed import Client, LocalCluster
 from rasterio import MemoryFile
 
-from cog_worker.distributed import DaskManager
 from cog_worker import Manager
-
+from cog_worker.distributed import DaskManager
 
 TEST_COG = "tests/roads_cog.tif"
 
@@ -36,16 +35,16 @@ def sample_function():
 
 
 def test_execute(daskmanager, manager, sample_function):
-    assert (
-        daskmanager.execute(sample_function)[0] == manager.execute(sample_function)[0]
-    ).all()
+    assert (daskmanager.execute(sample_function)[0] == manager.execute(sample_function)[0]).all()
 
 
 def test_chunk_execute(daskmanager, sample_function):
-    futures = daskmanager.client.compute(
-        daskmanager.chunk_execute(sample_function, compute=False)
-    )
-    results = daskmanager.client.gather(futures)
+    results = daskmanager.client.gather(daskmanager.chunk_execute(sample_function, compute=False))
+    assert all(isinstance(results[1], tuple) for results in results)
+
+
+def test_chunck_execute_compute(daskmanager, sample_function):
+    results = daskmanager.chunk_execute(sample_function, compute=True)
     assert all(isinstance(results[1], tuple) for results in results)
 
 

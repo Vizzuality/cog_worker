@@ -27,8 +27,9 @@ Example:
         results = manager.chunk_execute(my_analysis)
         total = sum(results)
 """
-from typing import Iterable, Iterator, Mapping, Union, Tuple, Any
+
 import logging
+from typing import Any, Iterable, Iterator, Mapping, Tuple, Union
 
 import dask
 import dask.distributed
@@ -36,8 +37,7 @@ from dask.delayed import Delayed
 from pyproj import Proj
 
 import cog_worker
-from cog_worker.types import WorkerFunction, BoundingBox
-
+from cog_worker.types import BoundingBox, WorkerFunction
 
 logger = logging.getLogger(__name__)
 
@@ -79,11 +79,11 @@ class DaskManager(cog_worker.manager.Manager):
     def execute(
         self,
         f: WorkerFunction,
-        f_args: Iterable = None,
-        f_kwargs: Mapping = None,
+        f_args: Union[Iterable, None] = None,
+        f_kwargs: Union[Mapping, None] = None,
         clip: bool = True,
         compute: bool = True,
-        **kwargs
+        **kwargs,
     ) -> Union[Tuple[Any, BoundingBox], Delayed]:
         """Execute a cog_worker function in the DaskManager's cluster.
 
@@ -134,11 +134,11 @@ class DaskManager(cog_worker.manager.Manager):
     def chunk_execute(
         self,
         f: WorkerFunction,
-        f_args: Iterable = None,
-        f_kwargs: Mapping = None,
+        f_args: Union[Iterable, None] = None,
+        f_kwargs: Union[Mapping, None] = None,
         chunksize: int = 512,
         compute: bool = True,
-    ) -> Union[Iterator[Tuple[Any, BoundingBox]], Iterator[Delayed]]:
+    ) -> Union[Iterator[Tuple[Any, BoundingBox]], Iterator[Delayed]]:  # type: ignore
         """Compute chunks in parallel in the DaskManager's cluster.
 
         Chunks will be yielded as they are completed. The order in which they
@@ -169,10 +169,8 @@ class DaskManager(cog_worker.manager.Manager):
         ]
         if compute:
             futures = self.client.compute(tasks)
-            for future, result in dask.distributed.as_completed(
-                futures, with_results=True
-            ):
+            for future, result in dask.distributed.as_completed(futures, with_results=True):
                 future.release()
                 yield result
         else:
-            return tasks
+            return tasks  # type: ignore
