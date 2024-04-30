@@ -30,7 +30,7 @@ Example:
 
 import logging
 import math
-from typing import IO, Any, Iterable, Iterator, Mapping, Optional, Tuple, Type, Union
+from typing import IO, Any, Iterable, Iterator, Mapping, Tuple, Type, Union
 
 import morecantile
 import numpy as np
@@ -124,7 +124,7 @@ class Manager:
         f: WorkerFunction,
         f_args: Union[Iterable, None] = None,
         f_kwargs: Union[Mapping, None] = None,
-        bounds: Optional[BoundingBox] | None = None,
+        bounds: Union[BoundingBox, None] = None,
         max_size: int = 1024,
         **kwargs,
     ) -> Tuple[Any, BoundingBox]:
