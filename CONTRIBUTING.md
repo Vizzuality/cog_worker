@@ -19,9 +19,8 @@ Note: requires `pandoc` to build convert jupyter notebooks.
  1. Create release candidate branch
  2. Run tests `tox`
  3. Update changelog
- 4. Bump to new version `bump2version [major/minor/patch]`
+ 4. Bump to new version `bump-my-version [major/minor/patch]`
  5. Build docs `cd sphinx_docs && make ghpages`
  6. Commit docs
  7. Merge to `main`
  8. Publish to pypi `tox -e release`
-

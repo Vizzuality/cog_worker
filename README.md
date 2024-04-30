@@ -6,7 +6,7 @@ Scalable geospatial analysis on Cloud Optimized GeoTIFFs.
  - **PyPI**: https://pypi.org/project/cog-worker
 
 cog_worker is a simple library to help write scripts to conduct scaleable
-analysis of gridded data. It's intended to be useful for moderate- to large-scale 
+analysis of gridded data. It's intended to be useful for moderate- to large-scale
 GIS, remote sensing, and machine learning applications.
 
 ## Installation
