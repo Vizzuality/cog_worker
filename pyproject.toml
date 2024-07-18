@@ -62,6 +62,9 @@ select = [
     "UP",  # pyupgrade
     "PL",  # Pylint
 ]
+ignore = [
+    "PLR0913", # too many arguments in function definition (5)
+]
 pydocstyle.convention = "google"
 pydocstyle.ignore-decorators = ["property"]
 

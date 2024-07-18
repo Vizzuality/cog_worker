@@ -19,7 +19,8 @@ Example:
 """
 
 import logging
-from typing import Sequence, Union
+from collections.abc import Sequence
+from typing import Union
 
 import numpy as np
 import rasterio as rio
@@ -210,7 +211,7 @@ class Worker:
             writer.write(arr)
             if isinstance(arr, np.ma.MaskedArray):
                 mask = np.ma.getmask(arr)
-                if len(mask.shape) == 3:
+                if len(mask.shape) == 3:  # noqa PLR2004
                     mask = np.any(mask, axis=0)
                 writer.write_mask(~mask)
 
@@ -226,7 +227,9 @@ class Worker:
         Raises:
             ValueError: If the array's shape does not match the Worker's width and height
         """
-        if len(arr.shape) == 2:
+        if len(arr.shape) == 2:  # noqa PLR2004
+            # single band flat array needs extra axis to have the same number of axis as
+            # an rgb raster
             arr = arr[np.newaxis]
         buffer_width = self.width + self.buffer * 2
         buffer_height = self.height + self.buffer * 2
@@ -257,12 +260,18 @@ def _read_cog(
     **kwargs,
 ) -> ImageData:
     """Read part of a COG, warping and resampling to a target shape."""
-    with COGReader(asset, **kwargs) as cog:  # type: ignore
-        return cog.part(
-            proj_bounds,
-            bounds_crs=crs,
-            dst_crs=crs,
-            max_size=None,
-            width=width,
-            height=height,
-        )
+    with COGReader(asset) as cog:  # type: ignore
+        part = cog.part(proj_bounds, bounds_crs=crs, dst_crs=crs, max_size=None, width=width, height=height, **kwargs)
+        # 2024-07-18
+        # This is wrong.
+        # Numpy masked array fill_value is fixed for all ints to 999999 which does not fit the 8 and 16 bits ints.
+        # This is "not an issue" for numpy < 2 since it allow conversion of out of bounds integer arrays but in > 2 it
+        # is not allowed making the serialization and deserializition of masked arrays a problem in multiprocessing.
+        #
+        # `fill_value` is a property where the setter checks and casts the value if possible.
+        # By setting the fill_value to itself, numpy overflows silently the np.int64(999999) to some trash.
+        # This allows serializing and deserializing the masked array without issues in numpy 2.x.
+        # We know this is nonsense but this has been the numpy way for decades and it is expected that the fill method
+        # is rarely or never used at all.
+        part.array.fill_value = part.array.fill_value
+        return part

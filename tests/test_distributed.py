@@ -3,7 +3,7 @@ import rasterio as rio
 from dask.distributed import Client, LocalCluster
 from rasterio import MemoryFile
 
-from cog_worker import Manager
+from cog_worker import Manager, Worker
 from cog_worker.distributed import DaskManager
 
 TEST_COG = "tests/roads_cog.tif"
@@ -28,7 +28,7 @@ def manager():
 
 @pytest.fixture
 def sample_function():
-    def myfunc(worker):
+    def myfunc(worker: Worker):
         return worker.read(TEST_COG)
 
     return myfunc
