@@ -39,7 +39,7 @@ Issues = "https://github.com/vizzuality/cog_worker/issues"
 
 [project.optional-dependencies]
 test = ["pytest"]
-dev = ["pre-commit"]
+dev = ["pre-commit", "bump-my-version"]
 distributed = ["dask[distributed]"]
 docs = ["Sphinx", "sphinxcontrib-napoleon", "furo", "nbsphinx", "nbconvert"]
 
