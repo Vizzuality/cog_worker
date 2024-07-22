@@ -17,16 +17,18 @@ Example:
         arr = worker.read('example-cog-url.tif')
         show(arr)
 """
-import logging
-from typing import Sequence, Union
 
+import logging
+from collections.abc import Sequence
+from typing import Union
+
+import numpy as np
+import rasterio as rio
 from pyproj import Proj
 from pyproj.enums import TransformDirection
-import rasterio as rio
-import numpy as np
 from rio_tiler.errors import EmptyMosaicError
-from rio_tiler.models import ImageData
 from rio_tiler.io import COGReader
+from rio_tiler.models import ImageData
 from rio_tiler.mosaic.reader import mosaic_reader
 
 from cog_worker.types import BoundingBox
@@ -41,7 +43,7 @@ class Worker:
     def __init__(
         self,
         bounds: BoundingBox = (-180, -85, 180, 85),
-        proj_bounds: BoundingBox = None,
+        proj_bounds: Union[BoundingBox, None] = None,
         proj: Union[int, str, Proj] = 3857,
         scale: float = 10000,
         buffer: int = 16,
@@ -60,9 +62,7 @@ class Worker:
                 The ideal buffer size depends on your analysis (e.g. whether you plan to use convolutions or
                 distance functions).
         """
-        self._proj = (
-            proj if isinstance(proj, Proj) else Proj(proj, preserve_units=False)
-        )
+        self._proj = proj if isinstance(proj, Proj) else Proj(proj, preserve_units=False)
 
         if proj_bounds is None:
             proj_bounds = self._proj.transform_bounds(*bounds)
@@ -125,9 +125,7 @@ class Worker:
         pts = max(self.width, self.height) + (buffered * self.buffer * 2) - 1
         pts = min(pts, 10000)
         bounds = self.xy_bounds(buffered)
-        return self.proj.transform_bounds(
-            *bounds, pts, direction=TransformDirection.INVERSE
-        )
+        return self.proj.transform_bounds(*bounds, pts, direction=TransformDirection.INVERSE)
 
     def empty(self, mask: bool = False) -> np.ndarray:
         """Return a zeroed array covering the Worker's extent including the buffer.
@@ -138,15 +136,11 @@ class Worker:
         """
         arr = np.zeros((1, self.height + self.buffer * 2, self.width + self.buffer * 2))
         if mask:
-            _mask = np.ones(
-                (1, self.height + self.buffer * 2, self.width + self.buffer * 2)
-            )
+            _mask = np.ones((1, self.height + self.buffer * 2, self.width + self.buffer * 2))
             arr = np.ma.array(arr, mask=_mask)
         return arr
 
-    def read(
-        self, src: Union[str, Sequence[str]], masked=True, **kwargs
-    ) -> Union[np.ndarray, np.ma.MaskedArray]:
+    def read(self, src: Union[str, Sequence[str]], masked=True, **kwargs) -> Union[np.ndarray, np.ma.MaskedArray]:
         """Read a COG, reprojecting and clipping as necessary.
 
         The read method uses ``rio_tiler.COGReader`` to takes advantage of the
@@ -182,12 +176,10 @@ class Worker:
         width, height = _bbox_size(proj_bounds, self._scale)
 
         if isinstance(src, str):
-            img = _read_COG(src, proj_bounds, self._proj.crs, width, height, **kwargs)
+            img = _read_cog(src, proj_bounds, self._proj.crs, width, height, **kwargs)
         elif isinstance(src, Sequence):
             try:
-                img, asset = mosaic_reader(
-                    src, _read_COG, proj_bounds, self.proj.crs, width, height, **kwargs
-                )
+                img, asset = mosaic_reader(src, _read_cog, proj_bounds, self.proj.crs, width, height, **kwargs)
             except EmptyMosaicError:
                 return self.empty(mask=True)
 
@@ -213,15 +205,13 @@ class Worker:
         """
         arr = self.clip_buffer(arr)
         count, height, width = arr.shape
-        profile = _get_profile(
-            count, self.scale, self._bounds, self.proj, arr.dtype, **kwargs
-        )
+        profile = _get_profile(count, self.scale, self._bounds, self.proj, arr.dtype, **kwargs)
 
         with rio.open(dst, "w", **profile) as writer:
             writer.write(arr)
             if isinstance(arr, np.ma.MaskedArray):
                 mask = np.ma.getmask(arr)
-                if len(mask.shape) == 3:
+                if len(mask.shape) == 3:  # noqa PLR2004
                     mask = np.any(mask, axis=0)
                 writer.write_mask(~mask)
 
@@ -237,7 +227,9 @@ class Worker:
         Raises:
             ValueError: If the array's shape does not match the Worker's width and height
         """
-        if len(arr.shape) == 2:
+        if len(arr.shape) == 2:  # noqa PLR2004
+            # single band flat array needs extra axis to have the same number of axis as
+            # an rgb raster
             arr = arr[np.newaxis]
         buffer_width = self.width + self.buffer * 2
         buffer_height = self.height + self.buffer * 2
@@ -248,18 +240,18 @@ class Worker:
             return arr[:, self.buffer : -self.buffer, self.buffer : -self.buffer]
         else:
             raise ValueError(
-                f"Array not expected size. Was {w}x{h} expected {self.width}x{self.height} or {buffer_width}x{buffer_height}"
+                f"Array not expected size. Was {w}x{h} expected {self.width}x{self.height} or {buffer_width}x{buffer_height}"  # noqa: E501
             )
 
     def _buffer_bbox(self) -> BoundingBox:
         """Returns the worker's bounding box extended by the buffered pixels."""
-        l, b, r, t = self._bounds
+        l, b, r, t = self._bounds  # noqa: E741
         _buffer = self.buffer * self.scale
 
         return (l - _buffer, b - _buffer, r + _buffer, t + _buffer)
 
 
-def _read_COG(
+def _read_cog(
     asset: str,
     proj_bounds: BoundingBox,
     crs: Union[str, int, Proj],
@@ -268,12 +260,18 @@ def _read_COG(
     **kwargs,
 ) -> ImageData:
     """Read part of a COG, warping and resampling to a target shape."""
-    with COGReader(asset, **kwargs) as cog:  # type: ignore
-        return cog.part(
-            proj_bounds,
-            bounds_crs=crs,
-            dst_crs=crs,
-            max_size=None,
-            width=width,
-            height=height,
-        )
+    with COGReader(asset) as cog:  # type: ignore
+        part = cog.part(proj_bounds, bounds_crs=crs, dst_crs=crs, max_size=None, width=width, height=height, **kwargs)
+        # 2024-07-18
+        # This is wrong.
+        # Numpy masked array fill_value is fixed for all ints to 999999 which does not fit the 8 and 16 bits ints.
+        # This is "not an issue" for numpy < 2 since it allow conversion of out of bounds integer arrays but in > 2 it
+        # is not allowed making the serialization and deserializition of masked arrays a problem in multiprocessing.
+        #
+        # `fill_value` is a property where the setter checks and casts the value if possible.
+        # By setting the fill_value to itself, numpy overflows silently the np.int64(999999) to some trash.
+        # This allows serializing and deserializing the masked array without issues in numpy 2.x.
+        # We know this is nonsense but this has been the numpy way for decades and it is expected that the fill method
+        # is rarely or never used at all.
+        part.array.fill_value = part.array.fill_value
+        return part

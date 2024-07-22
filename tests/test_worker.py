@@ -4,7 +4,6 @@ from rasterio.io import MemoryFile
 
 from cog_worker import Worker
 
-
 TEST_COG = "tests/roads_cog.tif"
 
 

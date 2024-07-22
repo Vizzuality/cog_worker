@@ -4,6 +4,8 @@ dist
 __pycache__
 .pytest_cache
 .mypy_cache
+.ruff_cache
+.venv
 .tox
 dask-worker-space
 *.egg-info

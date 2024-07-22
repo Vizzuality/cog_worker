@@ -1,8 +1,9 @@
 import pytest
 import rasterio as rio
-from rasterio.io import DatasetWriter
-from cog_worker import Manager
 from rasterio import MemoryFile, crs
+from rasterio.io import DatasetWriter
+
+from cog_worker import Manager
 
 TEST_COG = "tests/roads_cog.tif"
 
@@ -35,7 +36,7 @@ def test_tile(molleweide_manager, sample_function):
 
 def test_chunk_execute(molleweide_manager, sample_function):
     chunks = list(molleweide_manager.chunk_execute(sample_function, chunksize=123))
-    for arr, bbox in chunks:
+    for arr, _ in chunks:
         assert max(arr.shape) <= 123, "Max chunk size should be 123px"
 
 
@@ -60,9 +61,7 @@ def test_chunk_save(molleweide_manager, sample_function):
             assert src.profile["transform"][0] == 50000
             arr = src.read()
             assert arr.shape == full_arr.shape
-            assert (
-                abs(arr.sum() / full_arr.data.sum() - 1) < 0.002
-            ), "Error should be less than 0.2%"
+            assert abs(arr.sum() / full_arr.data.sum() - 1) < 0.002, "Error should be less than 0.2%"
 
 
 def test__write_chunk(molleweide_manager, sample_function):
