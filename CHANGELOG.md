@@ -1,5 +1,19 @@
 # CHANGELOG
 
+## v0.3.0
+
+### Changed
+- New `src/` project structure
+- Update depencies to latest major versions.
+- Migrate setup metadata and tooling to `pyproject.toml`
+- Switch linting and formatting to `ruff` and **reformat everything**
+- `mypy` pre-commit and fix typing here and there
+- migrate to newer `bump-my-version` package config in `pyproject.toml` to, guess, bump the version
+
+## Fixed
+
+- Fix issue with with latest dask versions (>2023.9.2) that made test fail
+
 ## v0.2.0
 
 ### Changed
