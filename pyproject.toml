@@ -33,6 +33,9 @@ dependencies = [
     "rio_tiler>=6.0.0,<7.0.0",
 ]
 
+[tool.setuptools.dynamic]
+version = {attr = "cog_worker.__version__"}
+
 [project.urls]
 Homepage = "https://github.com/vizzuality/cog_worker"
 Issues = "https://github.com/vizzuality/cog_worker/issues"
