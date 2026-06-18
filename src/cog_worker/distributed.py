@@ -29,7 +29,8 @@ Example:
 """
 
 import logging
-from typing import Any, Iterable, Iterator, Mapping, Tuple, Union
+from collections.abc import Iterable, Iterator, Mapping
+from typing import Any
 
 import dask
 import dask.distributed
@@ -53,7 +54,7 @@ class DaskManager(cog_worker.manager.Manager):
         self,
         dask_client: dask.distributed.Client,
         bounds: BoundingBox = (-180, -85, 180, 85),
-        proj: Union[int, str, Proj] = 3857,
+        proj: int | str | Proj = 3857,
         scale: float = 10000,
         buffer: int = 16,
     ):
@@ -76,15 +77,15 @@ class DaskManager(cog_worker.manager.Manager):
         self.client = dask_client
         super().__init__(bounds, proj, scale, buffer)
 
-    def execute(
+    def execute(  # type: ignore[override]
         self,
         f: WorkerFunction,
-        f_args: Union[Iterable, None] = None,
-        f_kwargs: Union[Mapping, None] = None,
+        f_args: Iterable | None = None,
+        f_kwargs: Mapping | None = None,
         clip: bool = True,
         compute: bool = True,
         **kwargs,
-    ) -> Union[Tuple[Any, BoundingBox], Delayed]:
+    ) -> tuple[Any, BoundingBox] | Delayed:
         """Execute a cog_worker function in the DaskManager's cluster.
 
         The execute method is the underlying method for running analysis. By
@@ -131,14 +132,14 @@ class DaskManager(cog_worker.manager.Manager):
             return future.result()  # type: ignore
         return task
 
-    def chunk_execute(
+    def chunk_execute(  # type: ignore[override]
         self,
         f: WorkerFunction,
-        f_args: Union[Iterable, None] = None,
-        f_kwargs: Union[Mapping, None] = None,
+        f_args: Iterable | None = None,
+        f_kwargs: Mapping | None = None,
         chunksize: int = 512,
         compute: bool = True,
-    ) -> Union[Iterator[Tuple[Any, BoundingBox]], Iterator[Delayed]]:  # type: ignore
+    ) -> Iterator[tuple[Any, BoundingBox]] | Iterator[Delayed]:
         """Compute chunks in parallel in the DaskManager's cluster.
 
         Chunks will be yielded as they are completed. The order in which they
