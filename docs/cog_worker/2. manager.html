@@ -1,23 +1,23 @@
 <!doctype html>
 <html class="no-js" lang="en" data-content_root="../">
-  <head><meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <head><meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="cog_worker.distributed" href="3.%20distributed.html" /><link rel="prev" title="cog_worker.worker" href="1.%20worker.html" />
+<link rel="index" title="Index" href="../genindex.html"><link rel="search" title="Search" href="../search.html"><link rel="next" title="cog_worker.distributed" href="3.%20distributed.html"><link rel="prev" title="cog_worker.worker" href="1.%20worker.html">
 
-    <!-- Generated with Sphinx 7.4.7 and Furo 2024.07.18 -->
-        <title>cog_worker.manager - Cog Worker 0.3.0 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
-    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=613ab9ff" />
-    <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=302659d7" />
+    <!-- Generated with Sphinx 9.0.4 and Furo 2025.12.19 -->
+        <title>cog_worker.manager - Cog Worker 0.4.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=d111a655" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=7bdb33bb" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=8dab3a3b" />
     
     
 
 
 <style>
   body {
-    --color-code-background: #f8f8f8;
-  --color-code-foreground: black;
+    --color-code-background: #f2f2f2;
+  --color-code-foreground: #1e1e1e;
   
   }
   @media not print {
@@ -144,14 +144,10 @@
   </symbol>
 </svg>
 
-<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
-<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
-<label class="overlay sidebar-overlay" for="__navigation">
-  <div class="visually-hidden">Hide navigation sidebar</div>
-</label>
-<label class="overlay toc-overlay" for="__toc">
-  <div class="visually-hidden">Hide table of contents sidebar</div>
-</label>
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle site navigation sidebar">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc" aria-label="Toggle table of contents sidebar">
+<label class="overlay sidebar-overlay" for="__navigation"></label>
+<label class="overlay toc-overlay" for="__toc"></label>
 
 <a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
 
@@ -161,17 +157,15 @@
   <header class="mobile-header">
     <div class="header-left">
       <label class="nav-overlay-icon" for="__navigation">
-        <div class="visually-hidden">Toggle site navigation sidebar</div>
-        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+        <span class="icon"><svg><use href="#svg-menu"></use></svg></span>
       </label>
     </div>
     <div class="header-center">
-      <a href="../index.html"><div class="brand">Cog Worker 0.3.0 documentation</div></a>
+      <a href="../index.html"><div class="brand">Cog Worker 0.4.0 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
-        <button class="theme-toggle">
-          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+        <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
           <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
           <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
           <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
@@ -179,8 +173,7 @@
         </button>
       </div>
       <label class="toc-overlay-icon toc-header-icon" for="__toc">
-        <div class="visually-hidden">Toggle table of contents sidebar</div>
-        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+        <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
       </label>
     </div>
   </header>
@@ -189,8 +182,7 @@
       
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
   
-  
-  <span class="sidebar-brand-text">Cog Worker 0.3.0 documentation</span>
+  <span class="sidebar-brand-text">Cog Worker 0.4.0 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -201,13 +193,13 @@
   <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../index.html">Introduction</a></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../examples.html">Examples</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of Examples</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../examples.html">Examples</a><input aria-label="Toggle navigation of Examples" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../examples/1.%20quick-start.html">Quick start</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../examples/2.%20tutorial.html">Tutorial example</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../examples/3.%20tile-server.html">Create a custom tile server</a></li>
 </ul>
 </li>
-<li class="toctree-l1 current has-children"><a class="reference internal" href="../api_reference.html">API Reference</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of API Reference</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l1 current has-children"><a class="reference internal" href="../api_reference.html">API Reference</a><input aria-label="Toggle navigation of API Reference" checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="1.%20worker.html">cog_worker.worker</a></li>
 <li class="toctree-l2 current current-page"><a class="current reference internal" href="#">cog_worker.manager</a></li>
 <li class="toctree-l2"><a class="reference internal" href="3.%20distributed.html">cog_worker.distributed</a></li>
@@ -240,8 +232,7 @@
   </a>
 </div>
 <div class="theme-toggle-container theme-toggle-content">
-            <button class="theme-toggle">
-              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+            <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
               <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
               <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
               <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
@@ -249,8 +240,7 @@
             </button>
           </div>
           <label class="toc-overlay-icon toc-content-icon" for="__toc">
-            <div class="visually-hidden">Toggle table of contents sidebar</div>
-            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+            <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
           </label>
         </div>
         <article role="main" id="furo-main-content">
@@ -266,9 +256,9 @@ Cloud Optimized GeoTIFFs.</p>
 <div class="admonition-example admonition">
 <p class="admonition-title">Example</p>
 <p>Use the manager to preview an analysis before executing it:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">cog_worker</span> <span class="kn">import</span> <span class="n">Manager</span>
-<span class="kn">from</span> <span class="nn">rasterio.plot</span> <span class="kn">import</span> <span class="n">show</span>
-<span class="k">def</span> <span class="nf">my_analysis</span><span class="p">(</span><span class="n">worker</span><span class="p">):</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">cog_worker</span><span class="w"> </span><span class="kn">import</span> <span class="n">Manager</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rasterio.plot</span><span class="w"> </span><span class="kn">import</span> <span class="n">show</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">my_analysis</span><span class="p">(</span><span class="n">worker</span><span class="p">):</span>
     <span class="n">arr</span> <span class="o">=</span> <span class="n">worker</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s1">&#39;example-cog.tif&#39;</span><span class="p">)</span>
     <span class="c1"># calculations ...</span>
     <span class="k">return</span> <span class="n">arr</span>
@@ -285,7 +275,7 @@ Cloud Optimized GeoTIFFs.</p>
 </div>
 <dl class="py class">
 <dt class="sig sig-object py" id="cog_worker.manager.Manager">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">cog_worker.manager.</span></span><span class="sig-name descname"><span class="pre">Manager</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bounds</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">(-180,</span> <span class="pre">-85,</span> <span class="pre">180,</span> <span class="pre">85)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">proj</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Proj</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">3857</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scale</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">10000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">buffer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">16</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cog_worker/manager.html#Manager"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cog_worker.manager.Manager" title="Link to this definition">¶</a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">cog_worker.manager.</span></span><span class="sig-name descname"><span class="pre">Manager</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bounds</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">(-180,</span> <span class="pre">-85,</span> <span class="pre">180,</span> <span class="pre">85)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">proj</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Proj</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">3857</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scale</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">10000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">buffer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">16</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cog_worker/manager.html#Manager"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cog_worker.manager.Manager" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Class for managing scalable analysis of Cloud Optimized GeoTIFFs.</p>
 <dl class="py method">
@@ -295,7 +285,7 @@ Cloud Optimized GeoTIFFs.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>bounds</strong> (<em>BoundingBox</em>) – The region to be analyzed as a (west, south,
+<li><p><strong>bounds</strong> (<a class="reference internal" href="4.%20types.html#cog_worker.types.BoundingBox" title="cog_worker.types.BoundingBox"><em>BoundingBox</em></a>) – The region to be analyzed as a (west, south,
 east, north) tuple.</p></li>
 <li><p><strong>proj</strong> (<em>pyproj.Proj</em><em>, </em><em>str</em><em>, </em><em>int</em>) – The projection to analyze in.
 Generally accepts any proj4 string, WKT projection, or EPSG
@@ -454,11 +444,11 @@ box of the executed analysis in the target projection.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>f</strong> (<em>WorkerFunction</em>) – The function to execute. The function will
+<li><p><strong>f</strong> (<a class="reference internal" href="4.%20types.html#cog_worker.types.WorkerFunction" title="cog_worker.types.WorkerFunction"><em>WorkerFunction</em></a>) – The function to execute. The function will
 recieve a cog_worker.worker.Worker as its first argument.</p></li>
 <li><p><strong>f_args</strong> (<em>list</em>) – Additional arguments to pass to the function.</p></li>
 <li><p><strong>f_kwargs</strong> (<em>dict</em>) – Additional keyword arguments to pass to the function.</p></li>
-<li><p><strong>(</strong><strong>BoundingBox</strong> (<em>bounds</em>) – self.bounds): The region to analize.</p></li>
+<li><p><strong>(</strong><strong>BoundingBox</strong> (<a class="reference internal" href="1.%20worker.html#cog_worker.worker.Worker.bounds" title="cog_worker.worker.Worker.bounds"><em>bounds</em></a>) – self.bounds): The region to analize.</p></li>
 <li><p><strong>default</strong> – self.bounds): The region to analize.</p></li>
 <li><p><strong>max_size</strong> (<em>int</em>) – The maximum size (width or height) in pixels to
 compute, ignoring any buffer (default: 1024px).</p></li>
@@ -487,7 +477,7 @@ with the default parameters.</p>
 recieve a cog_worker.worker.Worker as its first argument.</p></li>
 <li><p><strong>f_args</strong> (<em>list</em>) – Additional arguments to pass to the function.</p></li>
 <li><p><strong>f_kwargs</strong> (<em>dict</em>) – Additional keyword arguments to pass to the function.</p></li>
-<li><p><strong>bounds</strong> (<em>BoundingBox</em>) – The region to analize (default: self.bounds)</p></li>
+<li><p><strong>bounds</strong> (<a class="reference internal" href="4.%20types.html#cog_worker.types.BoundingBox" title="cog_worker.types.BoundingBox"><em>BoundingBox</em></a>) – The region to analize (default: self.bounds)</p></li>
 <li><p><strong>max_size</strong> (<em>int</em>) – The maximum size (width or height) in pixels to compute, ignoring any buffer
 (default: 1024px). Automatically reduces the scale of analysis to fit within <cite>max_size</cite>.</p></li>
 <li><p><strong>**kwargs</strong> – Additional keyword arguments to overload the Manager’s properties.
@@ -583,10 +573,10 @@ box of the executed analysis in the target projection.</p>
       
     </aside>
   </div>
-</div><script src="../_static/documentation_options.js?v=e259d695"></script>
-    <script src="../_static/doctools.js?v=9a2dae69"></script>
-    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
-    <script src="../_static/scripts/furo.js?v=5fa4622c"></script>
+</div><script src="../_static/documentation_options.js?v=6c02275b"></script>
+    <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../_static/scripts/furo.js?v=46bd48cc"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     </body>
 </html>

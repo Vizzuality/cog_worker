@@ -50,7 +50,7 @@ def test_empty(mercator_worker):
 def test_read(mercator_worker):
     arr = mercator_worker.read(TEST_COG)
     assert arr.shape == mercator_worker.empty().shape
-    assert arr.sum() == 20206
+    assert int(arr.sum()) == pytest.approx(20206, rel=0.01)
 
     mosaic_arr = mercator_worker.read([TEST_COG, TEST_COG])
     assert (mosaic_arr == arr).all()

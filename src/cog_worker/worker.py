@@ -20,11 +20,10 @@ Example:
 
 import logging
 from collections.abc import Sequence
-from typing import Union
 
 import numpy as np
 import rasterio as rio
-from pyproj import Proj
+from pyproj import CRS, Proj
 from pyproj.enums import TransformDirection
 from rio_tiler.errors import EmptyMosaicError
 from rio_tiler.io import COGReader
@@ -43,8 +42,8 @@ class Worker:
     def __init__(
         self,
         bounds: BoundingBox = (-180, -85, 180, 85),
-        proj_bounds: Union[BoundingBox, None] = None,
-        proj: Union[int, str, Proj] = 3857,
+        proj_bounds: BoundingBox | None = None,
+        proj: int | str | Proj = 3857,
         scale: float = 10000,
         buffer: int = 16,
     ):
@@ -136,11 +135,11 @@ class Worker:
         """
         arr = np.zeros((1, self.height + self.buffer * 2, self.width + self.buffer * 2))
         if mask:
-            _mask = np.ones((1, self.height + self.buffer * 2, self.width + self.buffer * 2))
+            _mask = np.ones((1, self.height + self.buffer * 2, self.width + self.buffer * 2), dtype=bool)
             arr = np.ma.array(arr, mask=_mask)
         return arr
 
-    def read(self, src: Union[str, Sequence[str]], masked=True, **kwargs) -> Union[np.ndarray, np.ma.MaskedArray]:
+    def read(self, src: str | Sequence[str], masked=True, **kwargs) -> np.ndarray | np.ma.MaskedArray:
         """Read a COG, reprojecting and clipping as necessary.
 
         The read method uses ``rio_tiler.COGReader`` to takes advantage of the
@@ -254,7 +253,7 @@ class Worker:
 def _read_cog(
     asset: str,
     proj_bounds: BoundingBox,
-    crs: Union[str, int, Proj],
+    crs: str | int | Proj | CRS,
     width: int,
     height: int,
     **kwargs,
