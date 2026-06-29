@@ -1,6 +1,8 @@
 # CHANGELOG
 
-## v0.3.1
+## v0.4.0
+
+### Changed
 - Update dependencies to support python 3.11-3.14
 - Deprecate python 3.8-3.10
 - Minor type annotation fixes
